@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public class UserProfileDataAccessService {
@@ -21,4 +23,7 @@ public class UserProfileDataAccessService {
         return fakeUserProfileDataStore.getUserProfiles();
     }
 
+    public UserProfile getUser(UUID userProfileId) {
+        return fakeUserProfileDataStore.getUser(userProfileId);
+    }
 }
