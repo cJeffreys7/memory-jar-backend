@@ -4,10 +4,10 @@
 
 # Planning essential links:
 
-## [**ERD**]
+## **ERD**
 ![Imgur](https://i.imgur.com/Qo37cr6.png)
 
-## [**Wireframes**]
+## **Wireframes**
 ![Imgur](https://i.imgur.com/nZ6H3Fe.png)
 
 View these more in depth [**here**](https://whimsical.com/memoryjar-FF3NupDB4M26LTk6qpRDjS)!
