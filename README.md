@@ -4,9 +4,9 @@
 
 # Planning essential links:
 
-[**ERD**](https://i.imgur.com/Qo37cr6.png) Data models
+![**ERD**](https://i.imgur.com/Qo37cr6.png) Data models
 
-[**Wireframes**](https://i.imgur.com/nZ6H3Fe.png) Wireframes
+![**Wireframes**](https://i.imgur.com/nZ6H3Fe.png) Wireframes
 
 View these more in depth [**here**](https://whimsical.com/memoryjar-FF3NupDB4M26LTk6qpRDjS)!
 
