@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1/user-profile")
+@RequestMapping("api/user-profile")
 @CrossOrigin("*")
 public class UserProfileController {
 

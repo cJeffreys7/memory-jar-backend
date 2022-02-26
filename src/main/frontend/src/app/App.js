@@ -9,7 +9,7 @@ const UserProfiles = () => {
   const [userProfiles, setUserProfiles] = useState([]);
 
   const fetchUserProfiles = () => {
-    axios.get("http://localhost:8080/api/v1/user-profile")
+    axios.get("http://localhost:8080/api/user-profile")
     .then(res=> {
       console.log(res);
       setUserProfiles(res.data);
@@ -23,7 +23,7 @@ const UserProfiles = () => {
   return userProfiles.map((userProfile, index) => {
     return (
       <div key={index}>
-        {userProfile.userProfileId ? <img src={`http://localhost:8080/api/v1/user-profile/${userProfile.userProfileId}/image/download`} /> : null}
+        {userProfile.userProfileId ? <img src={`http://localhost:8080/api/user-profile/${userProfile.userProfileId}/image/download`} /> : null}
         <br/>
         <br/>
         <h1>{userProfile.username}</h1>
@@ -43,7 +43,7 @@ function Dropzone({ userProfileId }) {
     // file param must be the same as api param
     formData.append("file", file);
     axios.post(
-      `http://localhost:8080/api/v1/user-profile/${userProfileId}/image/upload`,
+      `http://localhost:8080/api/user-profile/${userProfileId}/image/upload`,
       formData,
       {
         headers: {
