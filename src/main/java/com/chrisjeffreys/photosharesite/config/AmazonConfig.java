@@ -15,21 +15,22 @@ import org.springframework.core.env.Environment;
 @Configuration
 public class AmazonConfig {
 
+    //! Needs Environment var to recognize env vars in this config
     @Autowired
     private Environment env;
 
-    @Value("#{environment.awsaccesskey}")
-    private String awsAccessKey;
+    @Value("#{environment.s3accesskey}")
+    private String awsS3AccessKey;
 
-    @Value("#{environment.awssecretkey}")
-    private String awsSecretKey;
+    @Value("#{environment.s3secretkey}")
+    private String awsS3SecretKey;
 
     @Bean
     public AmazonS3 s3() {
-        // System.out.println("Access key: " + awsAccessKey + ", Secret key: " + awsSecretKey);
+    //  System.out.println("Access key: " + awsS3AccessKey + ", Secret key: " + awsS3SecretKey);
         AWSCredentials awsCredentials = new BasicAWSCredentials(
-                awsAccessKey,
-                awsSecretKey
+                awsS3AccessKey,
+                awsS3SecretKey
         );
 
         return AmazonS3ClientBuilder
