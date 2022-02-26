@@ -16,6 +16,7 @@ View these more in depth [**here**](https://whimsical.com/memoryjar-FF3NupDB4M26
 
 ### **Spring Boot and React Java Full Stack**
   - AWS S3
+  - DynamoDB
   - Maven
   - Java Spring Boot
   - React
