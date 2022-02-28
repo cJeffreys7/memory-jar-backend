@@ -11,7 +11,10 @@ function IconButton({ theme, color, icon }) {
 
     return (
         <ThemeProvider theme={theme}>
-            <Button color={pressed ? "primary" : "secondary"} onClick={handleClick}>
+            <Button
+                color={color ? color : pressed ? "primary" : "secondary"}
+                onClick={handleClick}
+            >
                 {icon && icon}
             </Button>
         </ThemeProvider>
