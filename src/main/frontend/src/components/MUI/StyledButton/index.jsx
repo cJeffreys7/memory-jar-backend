@@ -1,11 +1,34 @@
 import React from 'react';
 import Button from '@mui/material/Button';
+import { ThemeProvider } from '@mui/material';
+import { createTheme } from '@mui/material';
 
-const StyledButton = ({ type, variant, label, disabled, handleClick }) => {
+const StyledButton = ({ theme, type, variant, label, disabled, handleClick }) => {
+    const defaultTheme = createTheme({
+        palette: {
+            primary: {
+                main: '#2196f3'
+            },
+        }
+    })
+    
     return (
-        <Button type={type ? type : 'submit'} variant={variant ? variant : 'contained'} disabled={disabled} onClick={handleClick}>
-            {label}
-        </Button>
+        <ThemeProvider theme={theme ? theme : defaultTheme}>
+            <Button 
+                className='Button'
+                type={type ? type : 'submit'} 
+                variant={variant ? variant : 'contained'} 
+                disabled={disabled} 
+                onClick={handleClick}
+                sx={{
+                    width: 196,
+                    border: 2,
+                    borderRadius: 50,
+                }}
+            >
+                {label}
+            </Button>
+        </ThemeProvider>
     );
 };
 

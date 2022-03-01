@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 // components
 import FormInput from '../../components/FormInput';
 import Button from '../../components/MUI/StyledButton';
+import { createTheme } from '@mui/material';
 
 // assets
 import Icon from '../../assets/memoryjar_icon.svg'
@@ -198,8 +199,16 @@ const SignIn = (props) => {
     // }
 
     const isFormInvalid = () => {
-        return !(email && password);
+        return (!(email && password) || errors.passwordError || errors.emailError);
     }
+
+    const theme = createTheme({
+        palette: {
+            primary: {
+                main: '#000000'
+            },
+        }
+    })
 
     return (
         <div className='wrapper'>
@@ -226,7 +235,12 @@ const SignIn = (props) => {
                     value={password}
                     onChange={handleChange}
                 />
-                <Button type='submit' label='Login' disabled={isFormInvalid()}/>
+                <Button 
+                    theme={theme}
+                    type='submit' 
+                    label='Login' 
+                    disabled={isFormInvalid()}
+                />
             </form>
         </div>
     );
