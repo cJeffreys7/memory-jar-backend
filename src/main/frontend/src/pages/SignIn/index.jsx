@@ -235,6 +235,7 @@ const SignIn = (props) => {
                     value={password}
                     onChange={handleChange}
                 />
+                <a href='#'>Forgot your password?</a>
                 <Button 
                     theme={theme}
                     type='submit' 
@@ -242,6 +243,8 @@ const SignIn = (props) => {
                     disabled={isFormInvalid()}
                 />
             </form>
+            <h5>Don't have an account?</h5>
+            <a href='#'>Sign up</a>
         </div>
     );
 };
