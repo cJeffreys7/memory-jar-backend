@@ -214,37 +214,39 @@ const SignIn = (props) => {
         <div className='wrapper'>
             <img src={Icon} alt='Memory Jar Icon' />
             <img src={LogoText} alt='Memory Jar' />
-            <form onSubmit={handleSubmit}>
-                <FormInput 
-                    className='input'
-                    name='email'
-                    type='email'
-                    label='Email'
-                    error={emailError}
-                    helperText={emailError ? emailHelperText : ''}
-                    value={email}
-                    onChange={handleChange}
-                />
-                <FormInput 
-                    className='input'
-                    name='password'
-                    type='password'
-                    label='Password'
-                    error={passwordError}
-                    helperText={passwordError ? passwordHelperText : ''}
-                    value={password}
-                    onChange={handleChange}
-                />
-                <a href='#'>Forgot your password?</a>
-                <Button 
-                    theme={theme}
-                    type='submit' 
-                    label='Login' 
-                    disabled={isFormInvalid()}
-                />
-            </form>
-            <h5>Don't have an account?</h5>
-            <a href='#'>Sign up</a>
+            <div className='signin-wrapper'>
+                <form onSubmit={handleSubmit}>
+                    <FormInput 
+                        className='input'
+                        name='email'
+                        type='email'
+                        label='Email'
+                        error={emailError}
+                        helperText={emailError ? emailHelperText : ''}
+                        value={email}
+                        onChange={handleChange}
+                    />
+                    <FormInput 
+                        className='input'
+                        name='password'
+                        type='password'
+                        label='Password'
+                        error={passwordError}
+                        helperText={passwordError ? passwordHelperText : ''}
+                        value={password}
+                        onChange={handleChange}
+                    />
+                    <a href='#'>Forgot your password?</a>
+                    <Button 
+                        theme={theme}
+                        type='submit' 
+                        label='Login' 
+                        disabled={isFormInvalid()}
+                    />
+                </form>
+                <span className='signup-prompt'>Don't have an account?</span>
+                <a href='#'>Sign up</a>
+            </div>
         </div>
     );
 };

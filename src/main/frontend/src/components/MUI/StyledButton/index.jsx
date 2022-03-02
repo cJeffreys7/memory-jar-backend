@@ -2,6 +2,7 @@ import React from 'react';
 import Button from '@mui/material/Button';
 import { ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material';
+import './index.scss'
 
 const StyledButton = ({ theme, type, variant, label, disabled, handleClick }) => {
     const defaultTheme = createTheme({
@@ -24,6 +25,7 @@ const StyledButton = ({ theme, type, variant, label, disabled, handleClick }) =>
                     width: 196,
                     border: 2,
                     borderRadius: 50,
+                    maxWidth: 1024,
                 }}
             >
                 {label}
