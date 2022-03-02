@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 // components
 import FormInput from '../../components/FormInput';
@@ -255,7 +256,7 @@ const SignIn = (props) => {
                     />
                 </form>
                 <span className='signup-prompt'>Don't have an account?</span>
-                <a href='#'>Sign up</a>
+                <Link to='/signup'>Sign up</Link>
             </div>
         </div>
     );
