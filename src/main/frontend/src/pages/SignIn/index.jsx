@@ -65,8 +65,18 @@ const SignIn = (props) => {
         setErrors(initialErrors);
     }
 
-    const { email, password } = formData;
-    const { emailEntry, emailError, emailHelperText, passwordEntry, passwordError, passwordHelperText } = errors;
+    const { 
+            email, 
+            password 
+        } = formData;
+    const { 
+            emailEntry, 
+            emailError, 
+            emailHelperText, 
+            passwordEntry, 
+            passwordError, 
+            passwordHelperText 
+        } = errors;
     // const { validationDelay, isDelayed, delayRate } = validation;
 
 

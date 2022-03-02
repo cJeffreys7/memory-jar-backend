@@ -1,5 +1,4 @@
 .wrapper {
-
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -9,14 +8,12 @@
     }
 
     .signin-wrapper {
-
         display: flex;
         flex-direction: column;
         align-items: center;
         width: 100%;
 
         form {
-    
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -29,6 +26,7 @@
                 .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
                     border-radius: 32px;
                 }
+                
             }
     
             Button {
@@ -48,6 +46,5 @@
             color: #c43232;
         }
     }
-
 
 }
