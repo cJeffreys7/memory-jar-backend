@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { CognitoUserPool, CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import { promisify } from 'util'
 
@@ -14,9 +14,6 @@ import { createTheme } from '@mui/material';
 
 import './index.scss'
 
-// const userPoolId = process.env.REACT_APP_COGNITO_USER_POOL_ID
-// const clientId = process.env.REACT_APP_COGNITO_APP_CLIENT_ID
-
 const initialFormData = {
     name: '',
     email: '',
@@ -27,6 +24,7 @@ const initialFormData = {
 const initialErrors = {}
 
 const SignUp = (props) => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState(initialFormData);
     const [errors, setErrors] = useState(initialErrors);
 
@@ -52,6 +50,7 @@ const SignUp = (props) => {
             console.log('Signup success! Result: ', res);
             setFormData(initialFormData);
             setErrors(initialErrors);
+            navigate('/')
         } catch (error) {
             console.log('Signup failed. Error: ', error);
         };
@@ -131,7 +130,7 @@ const SignUp = (props) => {
     }, [name, email, password, confirmPassword]);
 
     const nameValidation = () => {
-        console.log('Validating name...');
+        // console.log('Validating name...');
         let error = {};
         if (!name) {
             error = {
@@ -149,7 +148,7 @@ const SignUp = (props) => {
     };
 
     const emailValidation = () => {
-        console.log('Validating email...');
+        // console.log('Validating email...');
         let error = {};
         if (!email) {
             console.log('No email entered');
@@ -161,12 +160,12 @@ const SignUp = (props) => {
             const emailExpression = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/g;
             const emailRegExp = new RegExp(emailExpression);
             if (email.match(emailRegExp)) {
-                console.log('Email matches email pattern');
+                // console.log('Email matches email pattern');
                 error = {
                     emailError: false
                 };
             } else {
-                console.log('Email does not match email pattern');
+                // console.log('Email does not match email pattern');
                 error = {
                     emailError: true,
                     emailHelperText: 'Invalid email'
@@ -178,7 +177,7 @@ const SignUp = (props) => {
     }
 
     const passwordValidation = () => {
-        console.log('Validating password...');
+        // console.log('Validating password...');
         let error = {};
         if (!password) {
             error = {
@@ -220,7 +219,7 @@ const SignUp = (props) => {
     };
 
     const confirmPasswordValidation = () => {
-        console.log('Validating confirm password...');
+        // console.log('Validating confirm password...');
         let error = {};
         if (confirmPassword !== password) {
             error = {
