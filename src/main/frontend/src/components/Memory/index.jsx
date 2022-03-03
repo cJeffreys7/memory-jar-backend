@@ -25,7 +25,7 @@ const configIconButton = {
 
 const Memory = () => {
     return (
-        <div className='wrapper'>
+        <div className='memory-wrapper'>
             <div className='border'>
                 <img src={defaultImg} alt="Memory Jar Icon" />
                 <IconButton {...configIconButton}/>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import AppBar from '../components/MUI/AppBar';
 
 // pages
 import Home from '../pages/Home';
@@ -28,13 +29,18 @@ function App() {
 
   return (
     <div className="App">
-      <Routes>
-        <Route path="/" element={user ? <Home handleLogout={handleLogout}/> : <Navigate to="/SignIn"/>} />
-        <Route path="/SignIn" element={<SignIn handleSignUpOrSignIn={handleSignUpOrSignIn}/>}/>
-        <Route path="/SignUp" element={<SignUp handleSignUpOrSignIn={handleSignUpOrSignIn}/>}/>
-      </Routes>
-      {/* Photo Sharing Site
-      <UserProfiles /> */}
+      <>
+        {user && 
+          <AppBar handleLogout={handleLogout}/>
+        }
+        <Routes>
+          <Route path="/" element={user ? <Home /> : <Navigate to="/SignIn"/>} />
+          <Route path="/SignIn" element={<SignIn handleSignUpOrSignIn={handleSignUpOrSignIn}/>}/>
+          <Route path="/SignUp" element={<SignUp handleSignUpOrSignIn={handleSignUpOrSignIn}/>}/>
+        </Routes>
+        {/* Photo Sharing Site
+        <UserProfiles /> */}
+      </>
     </div>
   );
 }
