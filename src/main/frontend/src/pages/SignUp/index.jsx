@@ -12,6 +12,9 @@ import FormInput from '../../components/FormInput';
 import Button from '../../components/MUI/StyledButton';
 import { createTheme } from '@mui/material';
 
+// services
+import * as authService from '../../services/authService'
+
 import './index.scss'
 
 const initialFormData = {
@@ -41,13 +44,11 @@ const SignUp = (props) => {
 
     const handleSubmit = async e => {
         e.preventDefault();
-        const userPool = new CognitoUserPool({
-            UserPoolId: process.env.REACT_APP_COGNITO_USER_POOL_ID,
-            ClientId: process.env.REACT_APP_COGNITO_APP_CLIENT_ID
-        });
         try {
-            const res = await signUp(userPool, email, name, password);
-            console.log('Signup success! Result: ', res);
+            // const res = await signUp(userPool, email, name, password);
+            // console.log('Signup success! Result: ', res);
+            await authService.signUpUser(name, email, password);
+            props.handleSignUpOrSignIn();
             setFormData(initialFormData);
             setErrors(initialErrors);
             navigate('/')
@@ -57,21 +58,21 @@ const SignUp = (props) => {
 
     };
 
-    const signUp = async (userPool, email, name, password) => {
-        const emailAttribute = new CognitoUserAttribute({
-            Name: 'email',
-            Value: email
-        });
-        const nameAttribute = new CognitoUserAttribute({
-            Name: 'name',
-            Value: name
-        });
+    // const signUp = async (userPool, email, name, password) => {
+    //     const emailAttribute = new CognitoUserAttribute({
+    //         Name: 'email',
+    //         Value: email
+    //     });
+    //     const nameAttribute = new CognitoUserAttribute({
+    //         Name: 'name',
+    //         Value: name
+    //     });
 
-        let attributes = [emailAttribute, nameAttribute];
-        const promisifiedSignUp = promisify(userPool.signUp).bind(userPool);
+    //     let attributes = [emailAttribute, nameAttribute];
+    //     const promisifiedSignUp = promisify(userPool.signUp).bind(userPool);
 
-        return promisifiedSignUp(email, password, attributes, null);
-    }
+    //     return promisifiedSignUp(email, password, attributes, null);
+    // }
 
     const { 
             name, 

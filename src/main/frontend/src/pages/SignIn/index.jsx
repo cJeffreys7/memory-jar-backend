@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { CognitoUserPool, CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
+import { CognitoUserPool, CognitoUser } from 'amazon-cognito-identity-js';
 
 // components
 import FormInput from '../../components/FormInput';
 import Button from '../../components/MUI/StyledButton';
 import { createTheme } from '@mui/material';
+
+// services
+import * as authService from '../../services/authService'
 
 // assets
 import Icon from '../../assets/memoryjar_icon.svg'
@@ -64,7 +67,21 @@ const SignIn = (props) => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        loginUser(email, password);
+        // const res = authService.loginUser(email, password);
+        authService.loginUser(email, password)
+        .then((result) => {
+            console.log('Login result: ', result);
+            props.handleSignUpOrSignIn();
+            navigate('/');
+        })
+        .catch((error) => {
+            console.log('Error loging in: ', error);
+        })
+        // if (res[1] === 'fulfilled') {
+        //     console.log('Successful login');
+        // } else if (res[1] === 'rejected') {
+        //     console.log('Failed login');
+        // }
         setFormData(initialFormData);
         setErrors(initialErrors);
     }
@@ -82,7 +99,11 @@ const SignIn = (props) => {
             passwordHelperText 
         } = errors;
     // const { validationDelay, isDelayed, delayRate } = validation;
-
+    
+    const userPool = new CognitoUserPool({
+        UserPoolId: process.env.REACT_APP_COGNITO_USER_POOL_ID,
+        ClientId: process.env.REACT_APP_COGNITO_APP_CLIENT_ID
+    });
 
     useEffect(() => {
         const formCheck = async => {
@@ -224,30 +245,52 @@ const SignIn = (props) => {
         }
     })
 
-    const loginUser = (email, password) => {
-        const userPool = new CognitoUserPool({
-            UserPoolId: process.env.REACT_APP_COGNITO_USER_POOL_ID,
-            ClientId: process.env.REACT_APP_COGNITO_APP_CLIENT_ID
+    const resetPassword = (username) => {
+        // const poolData = {
+        //     UserPoolId: process.env.REACT_APP_COGNITO_USER_POOL_ID,
+        //     ClientId: process.env.REACT_APP_COGNITO_APP_CLIENT_ID
+        // };
+        // const userPool = new CognitoUserPool(poolData);
+    
+        // setup cognitoUser first
+        const cognitoUser = new CognitoUser({
+            Username: username,
+            Pool: userPool
         });
-
-        const user = new CognitoUser({ Username: email, Pool: userPool });
-
-        const authenticationData = { Username: email, Password: password };
-        const authenticationDetails = new AuthenticationDetails(authenticationData);
-
-        return new Promise((resolve, reject) =>
-            user.authenticateUser(authenticationDetails, {
-                onSuccess: result => {
-                    resolve(result);
-                    console.log('Login successful: ', result);
-                    navigate('/');
-                },
-                onFailure: err => {
+    
+        // call forgotPassword on cognitoUser
+        cognitoUser.forgotPassword({
+            onSuccess: function(result) {
+                console.log('call result: ', result);
+            },
+            onFailure: function(err) {
+                alert(err);
+            },
+            // inputVerificationCode() { // this is optional, and likely won't be implemented as in AWS's example (i.e, prompt to get info)
+            //     var verificationCode = prompt('Please input verification code ', '');
+            //     var newPassword = prompt('Enter new password ', '');
+            //     cognitoUser.confirmPassword(verificationCode, newPassword, this);
+            // }
+        });
+    }
+    
+    // confirmPassword can be separately built out as follows...  
+    const confirmPassword = (username, verificationCode, newPassword) => {
+        const cognitoUser = new CognitoUser({
+            Username: username,
+            Pool: userPool
+        });
+    
+        return new Promise((resolve, reject) => {
+            cognitoUser.confirmPassword(verificationCode, newPassword, {
+                onFailure(err) {
                     reject(err);
-                    console.log('Login failed: ', err);
-                }
-            })
-        );
+                },
+                onSuccess() {
+                    resolve();
+                },
+            });
+        });
     }
 
     return (
@@ -276,7 +319,7 @@ const SignIn = (props) => {
                         value={password}
                         onChange={handleChange}
                     />
-                    <a href='#'>Forgot your password?</a>
+                    <a href='#' onClick={() => resetPassword(email)}>Forgot your password?</a>
                     <Button 
                         theme={theme}
                         type='submit' 
