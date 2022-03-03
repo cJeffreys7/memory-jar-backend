@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { CognitoUserPool, CognitoUserAttribute } from 'amazon-cognito-identity-js';
+import { promisify } from 'util'
 
 // assets
 import Icon from '../../assets/memoryjar_icon.svg'
@@ -10,6 +13,9 @@ import Button from '../../components/MUI/StyledButton';
 import { createTheme } from '@mui/material';
 
 import './index.scss'
+
+// const userPoolId = process.env.REACT_APP_COGNITO_USER_POOL_ID
+// const clientId = process.env.REACT_APP_COGNITO_APP_CLIENT_ID
 
 const initialFormData = {
     name: '',
@@ -35,10 +41,37 @@ const SignUp = (props) => {
         });
     };
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault();
-        setFormData(initialFormData);
-        setErrors(initialErrors);
+        const userPool = new CognitoUserPool({
+            UserPoolId: process.env.REACT_APP_COGNITO_USER_POOL_ID,
+            ClientId: process.env.REACT_APP_COGNITO_APP_CLIENT_ID
+        });
+        try {
+            const res = await signUp(userPool, email, name, password);
+            console.log('Signup success! Result: ', res);
+            setFormData(initialFormData);
+            setErrors(initialErrors);
+        } catch (error) {
+            console.log('Signup failed. Error: ', error);
+        };
+
+    };
+
+    const signUp = async (userPool, email, name, password) => {
+        const emailAttribute = new CognitoUserAttribute({
+            Name: 'email',
+            Value: email
+        });
+        const nameAttribute = new CognitoUserAttribute({
+            Name: 'name',
+            Value: name
+        });
+
+        let attributes = [emailAttribute, nameAttribute];
+        const promisifiedSignUp = promisify(userPool.signUp).bind(userPool);
+
+        return promisifiedSignUp(email, password, attributes, null);
     }
 
     const { 
@@ -152,6 +185,11 @@ const SignUp = (props) => {
                 passwordError: true,
                 passwordHelperText: 'Please enter a password'
             };
+        } else if (password.length < 8) {
+                error = {
+                    passwordError: true,
+                    passwordHelperText: 'Password should be atleast 8 characters'
+                };
         } else if (!(/[A-Z]/.test(password))) {
             error = {
                 passwordError: true,
@@ -184,7 +222,7 @@ const SignUp = (props) => {
     const confirmPasswordValidation = () => {
         console.log('Validating confirm password...');
         let error = {};
-        if (confirmPassword != password) {
+        if (confirmPassword !== password) {
             error = {
                 confirmPasswordError: true,
                 confirmPasswordHelperText: 'Passwords do not match'
@@ -271,10 +309,12 @@ const SignUp = (props) => {
                     <Button 
                         theme={theme}
                         type='submit' 
-                        label='Login' 
+                        label='Sign Up' 
                         disabled={isFormInvalid()}
                     />
                 </form>
+                <span className='signin-prompt'>Already have an account?</span>
+                <Link to='/signin'>Sign in</Link>
             </div>
         </div>
     );
