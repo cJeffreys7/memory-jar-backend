@@ -28,7 +28,9 @@ const Memory = () => {
         <div className='memory-wrapper'>
             <div className='border'>
                 <img src={defaultImg} alt="Memory Jar Icon" />
-                <IconButton {...configIconButton}/>
+                <div className='favorite-button'>
+                    <IconButton {...configIconButton}/>
+                </div>
             </div>
         </div>
     );

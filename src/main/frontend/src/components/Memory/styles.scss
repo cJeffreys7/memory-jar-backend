@@ -5,6 +5,15 @@
     .border {
         border: 2px solid rgb(196, 196, 196);
         padding: 16px;
+
+        // img {
+
+        // }
+
+        .favorite-button {
+            display: flex;
+            justify-content: flex-end;
+        }
     }
 
 }

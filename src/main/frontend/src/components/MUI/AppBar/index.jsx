@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AppBar, Toolbar, Typography } from '@mui/material';
 import { createSvgIcon } from '@mui/material/utils';
 import IconButton from '../IconButton';
@@ -7,6 +8,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 
 const NavBar = (props) => {
+    const navigate = useNavigate();
     // const MainMenuIconSVG = createSvgIcon(
     //     <path d="m42.6 209.4q14.1 8.7 38.6 13.2q24.4 4.5 52.6 4.5q28.1 0 52.6-4.5q24.4-4.5 38.6-13.2v17.7q0 7.1-12.3 13.3q-12.2 6.1-33.2 9.7q-21 3.6-45.7 3.6q-24.7 0-45.7-3.6q-21.1-3.6-33.3-9.7q-12.2-6.2-12.2-13.3v-17.7zm0-39.9v17.7q0 7.1 12.2 13.3q12.2 6.1 33.3 9.7q21 3.6 45.7 3.6q24.7 0 45.7-3.6q21-3.6 33.2-9.7q12.3-6.2 12.3-13.3v-17.7q-14.2 8.7-38.6 13.2q-24.5 4.5-52.6 4.5q-28.2 0-52.6-4.5q-24.5-4.5-38.6-13.2z" />,
 	//     <path d="m42.6 131.4q14.1 8.7 38.6 13.2q24.4 4.5 52.6 4.5q28.1 0 52.6-4.5q24.4-4.5 38.6-13.2v17.7q0 7.1-12.3 13.3q-12.2 6.1-33.2 9.7q-21 3.6-45.7 3.6q-24.7 0-45.7-3.6q-21.1-3.6-33.3-9.7q-12.2-6.2-12.2-13.3v-17.7zm0-39.9v17.7q0 7.1 12.2 13.3q12.2 6.1 33.3 9.7q21 3.6 45.7 3.6q24.7 0 45.7-3.6q21-3.6 33.2-9.7q12.3-6.2 12.3-13.3v-17.7q-14.2 8.7-38.6 13.2q-24.5 4.5-52.6 4.5q-28.2 0-52.6-4.5q-24.5-4.5-38.6-13.2z" />,
@@ -17,7 +19,12 @@ const NavBar = (props) => {
 
     const configMainMenuIconButton = {
         icon: <MenuIcon />,
-        // icon: <MainMenuIconSVG />
+        handleClick: () => navigate('/')
+    }
+
+    const configNewMemoryJarIconButton = {
+        icon: <MenuIcon />,
+        handleClick: () => navigate('/jars/new')
     }
 
     const configLogOutIconButton = {
@@ -33,7 +40,7 @@ const NavBar = (props) => {
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     
                 </Typography>
-                <IconButton {...configMainMenuIconButton}/>
+                <IconButton {...configNewMemoryJarIconButton}/>
                 <IconButton {...configLogOutIconButton}/>
                 </Toolbar>
             </AppBar>

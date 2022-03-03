@@ -4,6 +4,7 @@ import AppBar from '../components/MUI/AppBar';
 
 // pages
 import Home from '../pages/Home';
+import Jar from '../pages/Jar';
 import SignIn from '../pages/SignIn';
 import SignUp from '../pages/SignUp';
 import UserProfiles from '../pages/UserProfiles';
@@ -34,9 +35,10 @@ function App() {
           <AppBar handleLogout={handleLogout}/>
         }
         <Routes>
-          <Route path="/" element={user ? <Home /> : <Navigate to="/SignIn"/>} />
-          <Route path="/SignIn" element={<SignIn handleSignUpOrSignIn={handleSignUpOrSignIn}/>}/>
-          <Route path="/SignUp" element={<SignUp handleSignUpOrSignIn={handleSignUpOrSignIn}/>}/>
+          <Route path='/' element={user ? <Home /> : <Navigate to='/SignIn'/>} />
+          <Route path='/SignIn' element={<SignIn handleSignUpOrSignIn={handleSignUpOrSignIn}/>}/>
+          <Route path='/SignUp' element={<SignUp handleSignUpOrSignIn={handleSignUpOrSignIn}/>}/>
+          <Route path='/jars/new' element={<Jar />}/>
         </Routes>
         {/* Photo Sharing Site
         <UserProfiles /> */}
