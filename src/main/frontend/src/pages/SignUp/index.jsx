@@ -45,8 +45,6 @@ const SignUp = (props) => {
     const handleSubmit = async e => {
         e.preventDefault();
         try {
-            // const res = await signUp(userPool, email, name, password);
-            // console.log('Signup success! Result: ', res);
             await authService.signUpUser(name, email, password);
             props.handleSignUpOrSignIn();
             setFormData(initialFormData);
@@ -57,22 +55,6 @@ const SignUp = (props) => {
         };
 
     };
-
-    // const signUp = async (userPool, email, name, password) => {
-    //     const emailAttribute = new CognitoUserAttribute({
-    //         Name: 'email',
-    //         Value: email
-    //     });
-    //     const nameAttribute = new CognitoUserAttribute({
-    //         Name: 'name',
-    //         Value: name
-    //     });
-
-    //     let attributes = [emailAttribute, nameAttribute];
-    //     const promisifiedSignUp = promisify(userPool.signUp).bind(userPool);
-
-    //     return promisifiedSignUp(email, password, attributes, null);
-    // }
 
     const { 
             name, 
@@ -131,7 +113,6 @@ const SignUp = (props) => {
     }, [name, email, password, confirmPassword]);
 
     const nameValidation = () => {
-        // console.log('Validating name...');
         let error = {};
         if (!name) {
             error = {
@@ -149,7 +130,6 @@ const SignUp = (props) => {
     };
 
     const emailValidation = () => {
-        // console.log('Validating email...');
         let error = {};
         if (!email) {
             console.log('No email entered');
@@ -161,12 +141,10 @@ const SignUp = (props) => {
             const emailExpression = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/g;
             const emailRegExp = new RegExp(emailExpression);
             if (email.match(emailRegExp)) {
-                // console.log('Email matches email pattern');
                 error = {
                     emailError: false
                 };
             } else {
-                // console.log('Email does not match email pattern');
                 error = {
                     emailError: true,
                     emailHelperText: 'Invalid email'
@@ -178,7 +156,6 @@ const SignUp = (props) => {
     }
 
     const passwordValidation = () => {
-        // console.log('Validating password...');
         let error = {};
         if (!password) {
             error = {
@@ -220,7 +197,6 @@ const SignUp = (props) => {
     };
 
     const confirmPasswordValidation = () => {
-        // console.log('Validating confirm password...');
         let error = {};
         if (confirmPassword !== password) {
             error = {
