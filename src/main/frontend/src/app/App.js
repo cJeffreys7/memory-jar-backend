@@ -4,7 +4,7 @@ import AppBar from '../components/MUI/AppBar';
 
 // pages
 import Home from '../pages/Home';
-import Jar from '../pages/Jar';
+import Jar from '../pages/JarDetails';
 import SignIn from '../pages/SignIn';
 import SignUp from '../pages/SignUp';
 import UserProfiles from '../pages/UserProfiles';

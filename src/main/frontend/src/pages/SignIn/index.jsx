@@ -21,14 +21,7 @@ const initialFormData = {
     password: ''
 }
 
-const initialErrors = {
-    emailEntry: false,
-    emailError: false,
-    emailHelperText: 'Invalid email',
-    passwordEntry: false,
-    passwordError: false,
-    passwordHelperText: 'Invalid password'
-}
+const initialErrors = {}
 
 const SignIn = (props) => {
     const navigate = useNavigate();
@@ -40,18 +33,10 @@ const SignIn = (props) => {
             ...formData,
             [e.target.name]: e.target.value
         });
-        if (e.target.name === 'email') {
-            setErrors({
-                ...errors,
-                emailEntry: true
-            })
-        }
-        if (e.target.name === 'password') {
-            setErrors({
-                ...errors,
-                passwordEntry: true
-            })
-        }
+        setErrors({
+            ...errors,
+            [`${e.target.name}Entry`]: true
+        });
     }
 
     const handleSubmit = e => {

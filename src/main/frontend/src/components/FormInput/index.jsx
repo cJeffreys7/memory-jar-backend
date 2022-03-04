@@ -17,7 +17,7 @@ const FormInput = ({ className, name, type, label, placeholder, error, helperTex
             rows={rows ? rows : 1}
             variant={variant}
             sx = {{
-                maxWidth: 1024,
+                maxWidth: 1280,
             }}
         />
     );
