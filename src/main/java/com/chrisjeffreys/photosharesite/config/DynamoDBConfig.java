@@ -4,6 +4,7 @@ import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
@@ -14,14 +15,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableDynamoDBRepositories(basePackages = "com.chris-jeffreys.photosharesite.dynamodb.repositories")
+@EnableDynamoDBRepositories(basePackages = "com.chris-jeffreys.photosharesite.repository.MemoryJarRepository")
 public class DynamoDBConfig {
 
-    @Value("${aws.dynamoaccesskey}")
-    private String awsDynamoAccessKey;
+    @Value("${aws.accesskey}")
+    private String awsAccessKey;
 
-    @Value("${aws.dynamosecretkey}")
-    private String awsDynamoSecretKey;
+    @Value("${aws.secretkey}")
+    private String awsSecretKey;
 
     public AWSCredentialsProvider amazonAWSCredentialsProvider() {
         return new AWSStaticCredentialsProvider((amazonAWSCredentials()));
@@ -29,8 +30,8 @@ public class DynamoDBConfig {
 
     @Bean
     public AWSCredentials amazonAWSCredentials() {
-        return new BasicAWSCredentials(awsDynamoAccessKey,
-                awsDynamoSecretKey);
+        return new BasicAWSCredentials(awsAccessKey,
+                awsSecretKey);
     }
 
     @Bean
@@ -41,7 +42,14 @@ public class DynamoDBConfig {
     @Bean
     public AmazonDynamoDB amazonDynamoDB() {
         return AmazonDynamoDBClientBuilder
-                .standard().withCredentials(amazonAWSCredentialsProvider())
-                .withRegion(Regions.US_EAST_2).build();
+                .standard()
+                .withEndpointConfiguration(
+                        new AwsClientBuilder.EndpointConfiguration(
+                                "dynamodb.us-east-1.amazonaws.com",
+                                "us-east-1"
+                        )
+                )
+                .withCredentials(amazonAWSCredentialsProvider())
+                .build();
     }
 }
