@@ -1,4 +1,4 @@
-package com.chrisjeffreys.photosharesite.dynamodb;
+package com.chrisjeffreys.photosharesite.repository;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBSaveExpression;
@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class Repositories {
+public class MemoryJarRepository {
 
     @Autowired
     private DynamoDBMapper dynamoDBMapper;
@@ -19,23 +19,23 @@ public class Repositories {
         return jar;
     }
 
-    public MemoryJar getJarId(int id) {
-        return dynamoDBMapper.load(MemoryJar.class, id);
+    public MemoryJar getJarId(String jarId) {
+        return dynamoDBMapper.load(MemoryJar.class, jarId);
     }
 
-    public String delete (int id) {
-        MemoryJar jar = dynamoDBMapper.load(MemoryJar.class, id);
+    public String delete (String jarId) {
+        MemoryJar jar = dynamoDBMapper.load(MemoryJar.class, jarId);
         dynamoDBMapper.delete(jar);
         return "Jar deleted!";
     }
 
-    public int update (int id, MemoryJar jar) {
+    public String update (String jarId, MemoryJar jar) {
         dynamoDBMapper.save(jar,
                 new DynamoDBSaveExpression()
-                        .withExpectedEntry("id",
+                        .withExpectedEntry("jarId",
                                 new ExpectedAttributeValue(
-                                        new AttributeValue().withN(String.valueOf(id))
+                                        new AttributeValue().withS(jarId)
                                 )));
-        return id;
+        return jarId;
     }
 }
