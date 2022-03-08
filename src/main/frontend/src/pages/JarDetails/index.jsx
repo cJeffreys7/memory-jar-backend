@@ -92,20 +92,15 @@ const Jar = (props) => {
             admins: admins,
             ...formData
         };
-        // setFormData({
-        //     owner: currentUser.id,
-        //     admins: admins,
-        //     ...formData
-        // });
+        setFormData({
+            owner: currentUser.id,
+            admins: admins,
+            ...formData
+        });
         console.log('Form Data: ', formattedFormData);
-        axios.post('http://localhost:8080/jar',
-            formattedFormData,
-            {
-                headers: {
-                    "Access-Control-Allow-Origin": true,
-                    "Content-Type": "application/xml"
-                },
-            }
+        axios.post(
+            'http://localhost:8080/jar',
+            formattedFormData
         ).then(() => {
             console.log('Form Data updated successfully!');
         }).catch((err) => {
