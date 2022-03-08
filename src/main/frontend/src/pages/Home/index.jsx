@@ -40,7 +40,9 @@ const Home = (props) => {
             <Memory />
             <h2>Recent Memories</h2>
             <Memory />
-            {memoryJars && memoryJars}
+            <div className='memory-jar-previews'>
+                {memoryJars && memoryJars}
+            </div>
         </div>
     );
 };
