@@ -24,7 +24,7 @@ const Home = (props) => {
             ).then((result) => {
                 console.log('Returned Jars: ', result);
                 setMemoryJars(
-                    result.data.map(jar => <MemoryJarPreview key={jar.jarId}/>)
+                    result.data.map(jar => <MemoryJarPreview key={jar.jarId} jarId={jar.jarId}/>)
                 )
             }).catch((err) => {
                 console.log('Failed to return Jars: ', err);

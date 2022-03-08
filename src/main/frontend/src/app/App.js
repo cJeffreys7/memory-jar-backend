@@ -6,7 +6,7 @@ import AppBar from '../components/MUI/AppBar';
 
 // pages
 import Home from '../pages/Home';
-import Jar from '../pages/JarDetails';
+import Jar from '../pages/JarForm';
 import SignIn from '../pages/SignIn';
 import SignUp from '../pages/SignUp';
 import UserProfiles from '../pages/UserProfiles';
@@ -15,6 +15,7 @@ import UserProfiles from '../pages/UserProfiles';
 import * as authService from '../services/authService';
 
 import './App.scss';
+import JarDetails from '../pages/JarDetails';
 
 const App = (props) => {
   const { currentUser, setCurrentUser } = props;
@@ -45,6 +46,7 @@ const App = (props) => {
           <Route path='/SignIn' element={<SignIn handleSignUpOrSignIn={handleSignUpOrSignIn}/>}/>
           <Route path='/SignUp' element={<SignUp handleSignUpOrSignIn={handleSignUpOrSignIn}/>}/>
           <Route path='/jars/new' element={currentUser ? <Jar /> : <Navigate to='/SignIn'/>}/>
+          <Route path='/jars/:id' element={currentUser ? <JarDetails /> : <Navigate to='/SignIn' />}/>
         </Routes>
         {/* Photo Sharing Site
         <UserProfiles /> */}

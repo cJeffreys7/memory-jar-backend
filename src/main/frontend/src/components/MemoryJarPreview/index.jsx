@@ -1,10 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
+// assets
 import MemoryJarIcon from '../../assets/memoryjar_icon.svg'
 
-const MemoryJarPreview = () => {
+const MemoryJarPreview = ({ jarId }) => {
     return (
         <div className='memory-jar-wrapper'>
-            <img src={MemoryJarIcon} alt="Memory Jar Preview" />
+            <Link to={`/jars/${jarId}`}>
+                <img src={MemoryJarIcon} alt="Memory Jar Preview" />
+            </Link>
         </div>
     );
 };
