@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux'
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 // components
@@ -24,6 +25,7 @@ const initialViewerPermissions = {
 const initialErrors = {}
 
 const Jar = (props) => {
+    const navigate = useNavigate();
     const { currentUser } = props
     const [errors, setErrors] = useState(initialErrors);
     const [formData, setFormData] = useState(initialFormData);
@@ -98,11 +100,13 @@ const Jar = (props) => {
             ...formData
         });
         console.log('Form Data: ', formattedFormData);
+        console.log('New formData: ', formData.value);
         axios.post(
             'http://localhost:8080/jar',
             formattedFormData
         ).then(() => {
             console.log('Form Data updated successfully!');
+            navigate('/');
         }).catch((err) => {
             console.log('Error uploading form data: ', err);
         });
