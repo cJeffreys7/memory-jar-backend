@@ -5,6 +5,8 @@ import com.chrisjeffreys.photosharesite.repository.MemoryJarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin
 @RestController
 public class MemoryJarController {
@@ -14,13 +16,18 @@ public class MemoryJarController {
 
     @PostMapping("/jar")
     public MemoryJar saveJar(@RequestBody MemoryJar jar) {
-        System.out.println("Posting Jar");
         return jarRepository.save(jar);
     }
 
     @GetMapping("/jar/{id}")
     public MemoryJar getJar(@PathVariable("id") String id) {
         return jarRepository.getJarId(id);
+    }
+
+    @GetMapping("/jars/{owner}")
+    public List<MemoryJar> getJarsByOwner(@PathVariable("owner") String owner) {
+        System.out.println("Attempting to retrieve jars by " + owner);
+        return jarRepository.getJarsByOwner(owner);
     }
 
     @DeleteMapping("/jar/{id}")
