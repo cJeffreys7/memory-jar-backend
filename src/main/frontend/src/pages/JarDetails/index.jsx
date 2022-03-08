@@ -21,7 +21,7 @@ const JarDetails = () => {
     return (
         <div className='jar-wrapper'>
             <h1>Memory Jar Title</h1>
-            <MemoryJarActionBar />
+            <MemoryJarActionBar jarId={id}/>
             <h2>Favorite Memories</h2>
             <Memory />
             <IconButton {...configPopMemoryIconButton} handleClick={handleClick}/>

@@ -17,18 +17,18 @@ const initialFormData = {
     // admins: '',
     title: '',
     description: ''
-}
+};
 
 const initialViewerPermissions = {
     email: '',
     viewers: []
-}
+};
 
-const initialErrors = {}
+const initialErrors = {};
 
 const Jar = (props) => {
     const navigate = useNavigate();
-    const { currentUser } = props
+    const { currentUser } = props;
     const [errors, setErrors] = useState(initialErrors);
     const [formData, setFormData] = useState(initialFormData);
     const [viewerPermissions, setViewerPermissions] = useState(initialViewerPermissions);
@@ -43,7 +43,7 @@ const Jar = (props) => {
             ...errors,
             [`${e.target.name}Entry`]: true
         });
-    }
+    };
 
     const handleChangeEmail = e => {
         if (e.target.name !== 'email') {
@@ -253,10 +253,10 @@ const Jar = (props) => {
 
 Jar.defaultProps = {
     currentUser: null
-}
+};
 
 const mapStateToProps = ({ user }) => ({
     currentUser: user.currentUser
-})
+});
 
 export default connect(mapStateToProps, null)(Jar);

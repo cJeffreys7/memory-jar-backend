@@ -1,13 +1,17 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
+// components
+import IconButton from '../MUI/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import ShareIcon from '@mui/icons-material/Share';
 import AddIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
-import IconButton from '../MUI/IconButton';
 
 import './index.scss'
 
-const MemoryJarActionBar = () => {
+const MemoryJarActionBar = ({ jarId }) => {
+    const navigate = useNavigate();
     const iconSize = 64;
 
     const configEditIconButton = {
@@ -36,6 +40,7 @@ const MemoryJarActionBar = () => {
 
     const addMemoryJar = e => {
         console.log('Add Memory Jar action pressed');
+        navigate(`/jars/${jarId}/memories/new`)
     };
 
     const deleteMemoryJar = e => {
