@@ -15,6 +15,7 @@ public class MemoryJarRepository {
     private DynamoDBMapper dynamoDBMapper;
 
     public MemoryJar save(MemoryJar jar) {
+        System.out.println("New Memory Jar: " + jar);
         dynamoDBMapper.save(jar);
         return jar;
     }

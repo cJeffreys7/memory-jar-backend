@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, FormControlLabel, styled } from '@mui/material';
 import Switch from '@mui/material/Switch';
 
 import './index.scss'
 
-const JarViewer = ({ email, canEdit }) => {
+const JarViewer = ({ email, canEdit, handleChange }) => {
+    const [editPermission, setEditPermission] = useState(Boolean(canEdit));
     const IOSSwitch = styled((props) => (
         <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
         ))(({ theme }) => ({
@@ -56,19 +57,25 @@ const JarViewer = ({ email, canEdit }) => {
         },
         }));
 
+    const onChange = e => {
+        e.target.value = !editPermission;
+        setEditPermission(!editPermission);
+        handleChange(e);
+    }
+
     return (
         <div className='jar-viewer-wrapper'>
             <div className='jar-viewer-email'>
-                chrisbjeffreys@gmail.com
+                {email}
             </div>
             <FormControlLabel
                 className='can-edit-switch'
+                name={email}
                 control={<IOSSwitch sx={{ m: 1}} />}
                 label=''
+                checked={editPermission}
+                onChange={onChange}
             />
-            {/* <div className='can-edit-switch'>
-                <Switch color='success'/>
-            </div> */}
             <Button variant='contained' color='error'>Remove</Button>
         </div>
     );

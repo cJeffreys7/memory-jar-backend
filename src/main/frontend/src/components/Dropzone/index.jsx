@@ -13,9 +13,9 @@ const Dropzone = ({ userProfileId }) => {
         `http://localhost:8080/api/user-profile/${userProfileId}/image/upload`,
         formData,
         {
-        headers: {
-            "Content-Type": "multipart/form-data"
-        }
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
         }
     ).then(() => {
         console.log('file uploaded successfully');

@@ -44,7 +44,7 @@ const SignIn = (props) => {
         authService.loginUser(email, password)
         .then((result) => {
             console.log('Login result: ', result);
-            props.handleSignUpOrSignIn();
+            props.handleSignUpOrSignIn(email);
             navigate('/');
         })
         .catch((error) => {

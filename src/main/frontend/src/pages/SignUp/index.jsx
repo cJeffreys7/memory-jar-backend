@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { CognitoUserPool, CognitoUserAttribute } from 'amazon-cognito-identity-js';
-import { promisify } from 'util'
 
 // assets
 import Icon from '../../assets/memoryjar_icon.svg'

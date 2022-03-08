@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux'
 import axios from 'axios';
 
 // components
@@ -9,18 +10,27 @@ import Button from '../../components/MUI/StyledButton';
 import './index.scss'
 
 const initialFormData = {
+    // owner: '',
+    // admins: '',
     title: '',
-    description: '',
-    email: ''
+    description: ''
+}
+
+const initialViewerPermissions = {
+    email: '',
+    viewers: []
 }
 
 const initialErrors = {}
 
-const Jar = () => {
-    const [formData, setFormData] = useState(initialFormData);
+const Jar = (props) => {
+    const { currentUser } = props
     const [errors, setErrors] = useState(initialErrors);
+    const [formData, setFormData] = useState(initialFormData);
+    const [viewerPermissions, setViewerPermissions] = useState(initialViewerPermissions);
 
     const handleChange = e => {
+        console.log('Setting form data');
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
@@ -31,16 +41,80 @@ const Jar = () => {
         });
     }
 
+    const handleChangeEmail = e => {
+        if (e.target.name !== 'email') {
+            console.log('Changing viewer permissions: ', e.target.value);
+            setViewerPermissions({
+                ...viewerPermissions,
+                viewers: viewers.map(viewer => {
+                    console.log('Viewer: ', viewer.email, e.target.value);
+                    if (viewer.email === e.target.name) {
+                        return {
+                            email: e.target.name,
+                            editPermissions: e.target.value
+                        };
+                    } else {
+                        return viewer;
+                    };
+                })
+            });
+        } else {
+            console.log('Adding email');
+            setViewerPermissions({
+                ...viewerPermissions,
+                email: e.target.value
+            });
+        };
+    };
+
     const handleEmailInviteSubmit = e => {
         e.preventDefault();
-        console.log('Sending invite to ');
-    }
+        console.log(`Sending invite to ${viewerPermissions.email}`);
+        setViewerPermissions({
+            ...viewerPermissions,
+            viewers: [
+                ...viewers,
+                {
+                    email: viewerPermissions.email,
+                    editPermissions: false
+                }
+            ],
+            email: ''
+        });
+    };
 
     const handleSubmit = e => {
         e.preventDefault();
+        const admins = viewerPermissions.viewers.filter(viewer => viewer.editPermissions).map(viewer => viewer.email);
+        admins.unshift(currentUser.id);
+        const formattedFormData = {
+            owner: currentUser.id,
+            admins: admins,
+            ...formData
+        };
+        // setFormData({
+        //     owner: currentUser.id,
+        //     admins: admins,
+        //     ...formData
+        // });
+        console.log('Form Data: ', formattedFormData);
+        axios.post('http://localhost:8080/jar',
+            formattedFormData,
+            {
+                headers: {
+                    "Access-Control-Allow-Origin": true,
+                    "Content-Type": "application/xml"
+                },
+            }
+        ).then(() => {
+            console.log('Form Data updated successfully!');
+        }).catch((err) => {
+            console.log('Error uploading form data: ', err);
+        });
     }
 
-    const { title, description, email } = formData
+    const { title, description } = formData;
+    const { email, viewers } = viewerPermissions;
 
     const { 
         titleEntry,
@@ -142,19 +216,19 @@ const Jar = () => {
                     />
                 </form>
                 <span className='form-title'>Share Memory Jar</span>
-                <form className='share-jar-form' onSubmit={handleEmailInviteSubmit}>
+                <form className='share-jar-form'>
                     <FormInput 
                         className='input'
-                        name='title'
+                        name='email'
                         type='text'
                         label='Email'
                         // error={nameError}
                         // helperText={nameError ? nameHelperText : ''}
                         value={email}
-                        onChange={handleChange}
+                        onChange={handleChangeEmail}
                         variant='standard'
                     />
-                    <Button type='submit' label='Share'/>
+                    <Button type='submit' label='Share' handleClick={handleEmailInviteSubmit}/>
                 </form>
                 <div className='jar-permissions'>
                     <div className='permissions-headers'>
@@ -164,16 +238,11 @@ const Jar = () => {
                     </div>
                     <div className='jar-permissions-border'>
                         <div className='jar-permission-viewers'>
-                            <JarViewer />
-                            <JarViewer />
-                            <JarViewer />
-                            <JarViewer />
-                            <JarViewer />
-                            <JarViewer />
-                            <JarViewer />
-                            <JarViewer />
-                            <JarViewer />
-                            <JarViewer />
+                            {viewerPermissions.viewers && 
+                                viewerPermissions.viewers.map(viewer => (
+                                    <JarViewer key={viewer.email} email={viewer.email} canEdit={viewer.editPermissions} handleChange={handleChangeEmail}/>
+                                ))
+                            }
                         </div>
                     </div>
                 </div>
@@ -188,4 +257,12 @@ const Jar = () => {
     );
 };
 
-export default Jar;
+Jar.defaultProps = {
+    currentUser: null
+}
+
+const mapStateToProps = ({ user }) => ({
+    currentUser: user.currentUser
+})
+
+export default connect(mapStateToProps, null)(Jar);

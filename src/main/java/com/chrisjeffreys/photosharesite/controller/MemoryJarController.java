@@ -13,6 +13,7 @@ public class MemoryJarController {
 
     @PostMapping("/jar")
     public MemoryJar saveJar(@RequestBody MemoryJar jar) {
+        System.out.println("Posting Jar");
         return jarRepository.save(jar);
     }
 
