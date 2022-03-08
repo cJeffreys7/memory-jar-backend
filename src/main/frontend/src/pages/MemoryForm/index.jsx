@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 // import { connect } from 'react-redux';
 
 
 // components
-// import Dropzone from '../../components/Dropzone';
+import Dropzone from '../../components/Dropzone';
 import FormInput from '../../components/FormInput';
 import Button from '../../components/MUI/StyledButton';
 
-import './index.scss'
+import './styles.scss'
 
 const initialErrors = {};
 
@@ -20,6 +20,7 @@ const initialFormData = {
 const MemoryForm = (props) => {
     // const navigate = useNavigate();
     // const { currentUser } = props;
+    const { id } = useParams();
     const [errors, setErrors] = useState(initialErrors);
     const [formData, setFormData] = useState(initialFormData);
 
@@ -137,7 +138,7 @@ const MemoryForm = (props) => {
                     onChange={handleChange}
                     variant='outlined'
                 />
-                {/* <Dropzone {}/> */}
+                <Dropzone jarId={id}/>
                 <Button
                     type='submit'
                     label='Submit'

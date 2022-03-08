@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import axios from 'axios';
 import { useDropzone } from 'react-dropzone';
 
-const Dropzone = ({ userProfileId }) => {
+const Dropzone = ({ jarId }) => {
     const onDrop = useCallback(acceptedFiles => {
     const file = acceptedFiles[0];
     console.log(file);
@@ -10,7 +10,7 @@ const Dropzone = ({ userProfileId }) => {
     // file param must be the same as api param
     formData.append("file", file);
     axios.post(
-        `http://localhost:8080/api/user-profile/${userProfileId}/image/upload`,
+        `http://localhost:8080/jars/upload/${jarId}/memories`,
         formData,
         {
             headers: {

@@ -5,7 +5,7 @@ import { createTheme } from '@mui/material';
 import IconButton from '../MUI/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
-import './index.scss'
+import './styles.scss'
 
 const theme = createTheme({
     palette: {

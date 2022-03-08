@@ -8,7 +8,7 @@ import MemoryJarPreview from '../../components/MemoryJarPreview';
 // services
 import * as memoryJarService from '../../services/memoryJarService';
 
-import './index.scss'
+import './styles.scss'
 
 const Home = (props) => {
     const { currentUser } = props

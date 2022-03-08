@@ -13,7 +13,7 @@ import { createTheme } from '@mui/material';
 // services
 import * as authService from '../../services/authService'
 
-import './index.scss'
+import './styles.scss'
 
 const initialFormData = {
     name: '',

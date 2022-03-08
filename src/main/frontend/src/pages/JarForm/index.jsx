@@ -10,7 +10,7 @@ import Button from '../../components/MUI/StyledButton';
 // services
 import * as memoryJarService from '../../services/memoryJarService'
 
-import './index.scss'
+import './styles.scss'
 
 const initialFormData = {
     // owner: '',

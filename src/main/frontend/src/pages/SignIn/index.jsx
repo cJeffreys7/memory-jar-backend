@@ -14,7 +14,7 @@ import * as authService from '../../services/authService'
 import Icon from '../../assets/memoryjar_icon.svg'
 import LogoText from '../../assets/memoryjar_logo_text_dark.svg'
 
-import './index.scss'
+import './styles.scss'
 
 const initialFormData = {
     email: '',

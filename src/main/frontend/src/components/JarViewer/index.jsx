@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, FormControlLabel, styled } from '@mui/material';
 import Switch from '@mui/material/Switch';
 
-import './index.scss'
+import './styles.scss'
 
 const JarViewer = ({ email, canEdit, handleChange }) => {
     const [editPermission, setEditPermission] = useState(Boolean(canEdit));

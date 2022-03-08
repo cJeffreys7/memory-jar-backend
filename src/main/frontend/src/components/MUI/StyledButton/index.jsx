@@ -1,8 +1,11 @@
 import React from 'react';
-import Button from '@mui/material/Button';
 import { ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material';
-import './index.scss'
+
+// components
+import Button from '@mui/material/Button';
+
+import './styles.scss'
 
 const StyledButton = ({ theme, type, variant, label, disabled, handleClick }) => {
     const defaultTheme = createTheme({

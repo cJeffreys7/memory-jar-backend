@@ -8,7 +8,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import AddIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import './index.scss'
+import './styles.scss'
 
 const MemoryJarActionBar = ({ jarId }) => {
     const navigate = useNavigate();
