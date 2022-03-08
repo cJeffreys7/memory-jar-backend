@@ -1,38 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
 
 // components
 import Memory from '../../components/Memory';
+import MemoryJarPreview from '../../components/MemoryJarPreview';
+
+// services
+import * as memoryJarService from '../../services/memoryJarService';
 
 import './index.scss'
-import MemoryJarPreview from '../../components/MemoryJarPreview';
 
 const Home = (props) => {
     const { currentUser } = props
     const [memoryJars, setMemoryJars] = useState([])
 
     useEffect(() => {
-        const getMemoryJars = () => {
-            axios.get(
-                `http://localhost:8080/jars/${currentUser.id}`,
-                {
-                    headers: {
-                        "Access-Control-Allow-Origin": "*"
-                    }
-                }
-            ).then((result) => {
-                console.log('Returned Jars: ', result);
-                setMemoryJars(
-                    result.data.map(jar => <MemoryJarPreview key={jar.jarId} jarId={jar.jarId}/>)
-                )
-            }).catch((err) => {
-                console.log('Failed to return Jars: ', err);
-            })
+        const getMemoryJars = async () => {
+            const ownerJars = await memoryJarService.getJarsByOwner(currentUser.id);
+            setMemoryJars(ownerJars.data);
         };
 
         getMemoryJars();
-    }, [])
+    }, [currentUser.id])
 
     return (
         <div className='wrapper'>
@@ -41,7 +30,7 @@ const Home = (props) => {
             <h2>Recent Memories</h2>
             <Memory />
             <div className='memory-jar-previews'>
-                {memoryJars && memoryJars}
+                {memoryJars?.map(jar => <MemoryJarPreview key={jar.jarId} jarId={jar.jarId}/>)}
             </div>
         </div>
     );

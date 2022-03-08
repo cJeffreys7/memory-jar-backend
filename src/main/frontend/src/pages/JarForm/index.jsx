@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 // components
 import FormInput from '../../components/FormInput';
 import JarViewer from '../../components/JarViewer';
 import Button from '../../components/MUI/StyledButton';
+
+// services
+import * as memoryJarService from '../../services/memoryJarService'
 
 import './index.scss'
 
@@ -101,15 +103,8 @@ const Jar = (props) => {
         });
         console.log('Form Data: ', formattedFormData);
         console.log('New formData: ', formData.value);
-        axios.post(
-            'http://localhost:8080/jar',
-            formattedFormData
-        ).then(() => {
-            console.log('Form Data updated successfully!');
-            navigate('/');
-        }).catch((err) => {
-            console.log('Error uploading form data: ', err);
-        });
+        const result = memoryJarService.saveJar(formattedFormData);
+        if (result) navigate('/');
     }
 
     const { title, description } = formData;
