@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/user-profile")
+@RequestMapping("jars/upload")
 @CrossOrigin("*")
 public class UserProfileController {
 
@@ -26,13 +26,13 @@ public class UserProfileController {
     }
 
     @PostMapping(
-            path="{userProfileId}/image/upload",
+            path="{jarId}/memories",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public void uploadUserProfileImage(@PathVariable("userProfileId") UUID userProfileId,
+    public void uploadUserProfileImage(@PathVariable("jarId") String jarId,
                                        @RequestParam("file") MultipartFile file) {
-        userProfileService.uploadUserProfileImage(userProfileId, file);
+        userProfileService.uploadUserProfileImage(jarId, file);
     }
 
     @GetMapping("{userProfileId}/image/download")

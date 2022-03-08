@@ -2,7 +2,7 @@ package com.chrisjeffreys.photosharesite.bucket;
 
 public enum BucketName {
 
-    PROFILE_IMAGE("photo-sharing-site-jsbr");
+    PROFILE_IMAGE("memory-jar-memories");
 
     private final String bucketName;
 

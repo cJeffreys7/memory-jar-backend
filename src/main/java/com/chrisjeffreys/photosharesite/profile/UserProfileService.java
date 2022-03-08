@@ -26,7 +26,7 @@ public class UserProfileService {
         return userProfileDataAccessService.getUserProfiles();
     }
 
-    void uploadUserProfileImage(UUID userProfileId, MultipartFile file) {
+    void uploadUserProfileImage(String jarId, MultipartFile file) {
         // 1. Check if image is not empty
         // 2. If file is an image
         // 3. The user exists in our database
@@ -34,19 +34,19 @@ public class UserProfileService {
         // 5. Store the image in s3 and update DB with s3 image link
         if (!file.isEmpty() && file.getContentType().contains("image")) {
             System.out.println("Valid image file");
-            UserProfile user = userProfileDataAccessService.getUser(userProfileId);
-            System.out.println("User Profile ID " + userProfileId + " exists");
+//            UserProfile user = userProfileDataAccessService.getUser(userProfileId);
+//            System.out.println("User Profile ID " + userProfileId + " exists");
 
             Map<String, String> metadata = new HashMap<>();
             metadata.put("Content-Type", file.getContentType());
             metadata.put("Content-Length", String.valueOf(file.getSize()));
 
-            String path = String.format("%s/%s", BucketName.PROFILE_IMAGE.getBucketName(), userProfileId);
+            String path = String.format("%s/%s", BucketName.PROFILE_IMAGE.getBucketName(), jarId);
             String filename = String.format("%s-%s", file.getOriginalFilename(), UUID.randomUUID());
 
             try {
                 fileStore.save(path, filename, Optional.of(metadata), file.getInputStream());
-                user.setUserProfileImageLink(filename);
+//                user.setUserProfileImageLink(filename);
             } catch (IOException e) {
                 throw new IllegalStateException(e);
             }
