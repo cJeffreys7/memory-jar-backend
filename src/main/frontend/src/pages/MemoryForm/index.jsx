@@ -21,7 +21,7 @@ const initialFormData = {
 };
 
 const MemoryForm = (props) => {
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     // const { currentUser } = props;
     const { id } = useParams();
     const [errors, setErrors] = useState(initialErrors);
@@ -44,10 +44,10 @@ const MemoryForm = (props) => {
         setFile(file);
     };
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault();
-        console.log('Submitting formData: ', formData);
-        memoryJarService.saveMemory(id, formData, file);
+        const result = await memoryJarService.saveMemory(id, formData, file);
+        if (result) navigate(-1);
     };
 
     const { title, description } = formData;

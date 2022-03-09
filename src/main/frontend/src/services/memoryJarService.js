@@ -1,8 +1,10 @@
 import axios from "axios"
 
+const baseUrl = 'http://localhost:8080'
+
 const getJar = (jarId) => {
     try {
-        const result = axios.get(`http://localhost:8080/jars/${jarId}`);
+        const result = axios.get(`${baseUrl}/jars/${jarId}`);
         console.log('Memory Jar retrieved: ', result);
         return result;
     } catch (err) {
@@ -14,7 +16,7 @@ const getJar = (jarId) => {
 const getJarsByOwner = async (owner) => {
     try {
         const result = axios.get(
-            `http://localhost:8080/jars/owner/${owner}`,
+            `${baseUrl}/jars/owner/${owner}`,
             {
                 headers: {
                     "Access-Control-Allow-Origin": "*"
@@ -29,7 +31,7 @@ const getJarsByOwner = async (owner) => {
 
 const saveJar = async (memoryJarData) => {
     try {
-        const result = axios.post('http://localhost:8080/jars/new', memoryJarData);
+        const result = axios.post(`${baseUrl}/jars/new`, memoryJarData);
         console.log('New Memory Jar created: ', result);
         return true;
     } catch (err) {
@@ -41,8 +43,9 @@ const saveJar = async (memoryJarData) => {
 const saveMemory = async (jarId, memoryData, file) => {
     const fileData = new FormData();
     fileData.append("file", file)
-    axios.post(
-        `http://localhost:8080/jars/${jarId}/memories/new`,
+    let filename = '';
+    await axios.post(
+        `${baseUrl}/jars/${jarId}/memories/new`,
         fileData,
         {
             headers: {
@@ -51,25 +54,31 @@ const saveMemory = async (jarId, memoryData, file) => {
         }
     ).then((result) => {
         console.log('File uploaded successfully! ', result);
+        filename = result.data;
     })
     .catch((err) => {
         console.log(err);
     })
+    memoryData = {
+        ...memoryData,
+        type: file.type,
+        content: filename
+    }
     const currentJar = await getJar(jarId);
     const memories = currentJar.data.memories ? currentJar.data.memories : [];
-    console.log('Previous Memories: ', memories);
-    console.log('New Memory Data: ', memoryData);
     memories.push(memoryData);
-    console.log('Current Memories: ', memories);
     currentJar.data.memories = memories;
-    console.log('Updated with new Memory: ', currentJar.data);
-    // updateJar(jarId, currentJar.data)
+    const result = await updateJar(jarId, currentJar.data);
+    return result;
 }
 
 const updateJar = async (jarId, memoryJarData) => {
     try {
-        const result = axios.post(`http://localhost:8080/jars/${jarId}`, memoryJarData);
-        console.log('Memory Jar updated: ', result);
+        await axios.put(
+            `${baseUrl}/jars/${jarId}`,
+            memoryJarData
+        );
+        console.log('Memory Jar updated!');
         return true;
     } catch (err) {
         console.log('Failed to update Memory Jar: ', err);
