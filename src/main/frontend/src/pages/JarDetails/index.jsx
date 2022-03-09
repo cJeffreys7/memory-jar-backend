@@ -10,38 +10,48 @@ import StorageIcon from '@mui/icons-material/Storage';
 // services
 import * as memoryJarService from '../../services/memoryJarService';
 
-const initialRandomMemory = {
-    title: '',
-    filename: ''
-}
+const getRandomIndexInRange = (length) => {
+    return Math.floor(Math.random() * length);
+};
 
 const JarDetails = () => {
     const { id } = useParams();
-    // const [memoryJar, setMemoryJar] = useState({});
-    const [randomMemory, setRandomMemory] = useState('');
+    const [newRandomMemory, setNewRandomMemory] = useState({});
+    const [memoryJar, setMemoryJar] = useState();
+    const [randomMemory, setRandomMemory] = useState();
 
     const configPopMemoryIconButton = {
         icon: <StorageIcon sx={{ fontSize: 128}}/>
-    }
+    };
 
-    const handleClick = e => {
-        console.log('Open another memory');
-    }
+    const handleClick = () => {
+        retrieveRandomMemory(id);
+    };
+
+    const retrieveRandomMemory = async (jarId) => {
+        console.log('Current Memory Jar: ', memoryJar);
+        if (memoryJar.data.memories) {
+            const memoryFilename = memoryJar.data.memories[getRandomIndexInRange(newRandomMemory.memoriesLength)].filename;
+            const memoryTitle = memoryJar.data.title;
+            setRandomMemory(
+                <img src={`http://localhost:8080/jars/${jarId}/memories/${memoryFilename}`} alt={memoryTitle} />
+            );
+        };
+    };
 
     useEffect(() => {
-        const retrieveRandomMemory = async (jarId) => {
+        const setInitialMemoryIndex = async (jarId) => {
             const currentMemoryJar = await memoryJarService.getJar(jarId);
+            setMemoryJar(currentMemoryJar);
             if (currentMemoryJar.data.memories) {
-                const randomIndex = Math.floor(Math.random() * currentMemoryJar.data.memories.length);
-                const memoryFilename = currentMemoryJar.data.memories[randomIndex].filename;
-                const memoryTitle = currentMemoryJar.data.title;
-                setRandomMemory(
-                    memoryJarService.getMemory(id, memoryFilename, memoryTitle)
-                );
-            }
-        }
+                setNewRandomMemory({
+                    memoriesLength: currentMemoryJar.data.memories.length,
+                });
+                retrieveRandomMemory(jarId);
+            };
+        };
 
-        retrieveRandomMemory(id);
+        setInitialMemoryIndex(id);
     }, [])
 
     return (
