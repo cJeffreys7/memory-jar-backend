@@ -8,6 +8,9 @@ import Dropzone from '../../components/Dropzone';
 import FormInput from '../../components/FormInput';
 import Button from '../../components/MUI/StyledButton';
 
+// services
+import * as memoryJarService from '../../services/memoryJarService'
+
 import './styles.scss'
 
 const initialErrors = {};
@@ -23,6 +26,7 @@ const MemoryForm = (props) => {
     const { id } = useParams();
     const [errors, setErrors] = useState(initialErrors);
     const [formData, setFormData] = useState(initialFormData);
+    const [file, setFile] = useState(null);
 
     const handleChange = e => {
         setFormData({
@@ -33,12 +37,18 @@ const MemoryForm = (props) => {
             ...errors,
             [`${e.target.name}Entry`]: true
         });
-    }
+    };
+
+    const handleAddFile = file => {
+        console.log(file);
+        setFile(file);
+    };
 
     const handleSubmit = e => {
         e.preventDefault();
         console.log('Submitting formData: ', formData);
-    }
+        memoryJarService.saveMemory(id, formData, file);
+    };
 
     const { title, description } = formData;
     const {
@@ -138,7 +148,7 @@ const MemoryForm = (props) => {
                     onChange={handleChange}
                     variant='outlined'
                 />
-                <Dropzone jarId={id}/>
+                <Dropzone jarId={id} handleAddFile={handleAddFile}/>
                 <Button
                     type='submit'
                     label='Submit'

@@ -4,16 +4,16 @@ import { useDropzone } from 'react-dropzone';
 
 import './styles.scss'
 
-const Dropzone = ({ jarId }) => {
+const Dropzone = ({ jarId, handleAddFile }) => {
     const [image, setImage] = useState('');
 
     const onDrop = useCallback(acceptedFiles => {
     const file = acceptedFiles[0];
-    console.log(file);
+    handleAddFile(file);
     setImage(URL.createObjectURL(file));
-    const formData = new FormData();
+    // const formData = new FormData();
     // file param must be the same as api param
-    formData.append("file", file);
+    // formData.append("file", file);
     // axios.post(
     //     `http://localhost:8080/jars/upload/${jarId}/memories`,
     //     formData,
