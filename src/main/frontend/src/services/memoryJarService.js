@@ -2,7 +2,7 @@ import axios from "axios"
 
 const baseUrl = 'http://localhost:8080'
 
-const getJar = (jarId) => {
+const getJar = async (jarId) => {
     try {
         const result = axios.get(`${baseUrl}/jars/${jarId}`);
         console.log('Memory Jar retrieved: ', result);
@@ -27,6 +27,10 @@ const getJarsByOwner = async (owner) => {
     } catch (err) {
         console.log('Failed to get Jars by Owner: ', err);
     }
+}
+
+const getMemory = async (jarId, filename, alt) => {
+    return <img src={`http://localhost:8080/jars/${jarId}/memories/${filename}`} alt={alt} />
 }
 
 const saveJar = async (memoryJarData) => {
@@ -62,7 +66,7 @@ const saveMemory = async (jarId, memoryData, file) => {
     memoryData = {
         ...memoryData,
         type: file.type,
-        content: filename
+        filename: filename
     }
     const currentJar = await getJar(jarId);
     const memories = currentJar.data.memories ? currentJar.data.memories : [];
@@ -89,6 +93,7 @@ const updateJar = async (jarId, memoryJarData) => {
 export {
     getJar,
     getJarsByOwner,
+    getMemory,
     saveJar,
     saveMemory,
     updateJar

@@ -23,11 +23,14 @@ const configIconButton = {
     icon: <FavoriteIcon />
 }
 
-const Memory = () => {
+const Memory = ({ img }) => {
     return (
         <div className='memory-wrapper'>
             <div className='border'>
-                <img src={defaultImg} alt="Memory Jar Icon" />
+                {
+                    img ? img : 
+                    <img src={defaultImg} alt="Memory Jar Icon" />
+                }
                 <div className='favorite-button'>
                     <IconButton {...configIconButton}/>
                 </div>
