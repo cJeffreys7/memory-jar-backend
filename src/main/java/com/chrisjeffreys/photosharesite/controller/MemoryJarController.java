@@ -49,6 +49,13 @@ public class MemoryJarController {
         return jarRepository.getJarsByOwner(owner);
     }
 
+    @GetMapping("/{id}/memories/{memoryId}")
+    public byte[] getMemoryFile(@PathVariable("id") String jarId,
+                                @PathVariable("memoryId") String filename) {
+        System.out.println("Retrieving " + filename + " for Jar " + jarId);
+        return bucketService.downloadMemoryFile(jarId, filename);
+    }
+
     @DeleteMapping("/{id}")
     public String deleteJar(@PathVariable("id") String id) {
         return jarRepository.delete(id);

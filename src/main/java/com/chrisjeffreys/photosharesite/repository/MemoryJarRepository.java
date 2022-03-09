@@ -3,6 +3,7 @@ package com.chrisjeffreys.photosharesite.repository;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBSaveExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTyped;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
@@ -20,8 +21,11 @@ public class MemoryJarRepository {
     @Autowired
     private DynamoDBMapper dynamoDBMapper;
 
+    public MemoryJarRepository(DynamoDBMapper dynamoDBMapper) {
+        this.dynamoDBMapper = dynamoDBMapper;
+    }
+
     public MemoryJar save(MemoryJar jar) {
-        System.out.println("New Memory Jar: " + jar);
         dynamoDBMapper.save(jar);
         return jar;
     }

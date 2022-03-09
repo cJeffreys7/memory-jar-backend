@@ -44,13 +44,11 @@ public class BucketService {
         } else throw new IllegalStateException("Invalid file");
     }
 
-    public byte[] downloadUserProfileImage(UUID userProfileId) {
+    public byte[] downloadMemoryFile(String jarId, String filename) {
         String path = String.format("%s/%s",
                 BucketName.PROFILE_IMAGE.getBucketName(),
-                userProfileId);
-
-//        return user.getUserProfileImageLink().map(key -> fileStore.download(path, key))
-//                .orElse(new byte[0]);
-        return (new byte[0]);
+                jarId);
+        final Optional<String> bucketFilename = Optional.ofNullable(filename);
+        return bucketFilename.map(key -> fileStore.download(path, key)).orElse(new byte[0]);
     }
 }
