@@ -1,41 +1,60 @@
 package com.chrisjeffreys.photosharesite.controller;
 
+import com.chrisjeffreys.photosharesite.bucket.BucketService;
 import com.chrisjeffreys.photosharesite.datamodel.MemoryJar;
 import com.chrisjeffreys.photosharesite.repository.MemoryJarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@CrossOrigin
 @RestController
+@RequestMapping("/jars")
+@CrossOrigin("*")
 public class MemoryJarController {
 
-    @Autowired
     private MemoryJarRepository jarRepository;
+    private BucketService bucketService;
 
-    @PostMapping("/jar")
+    @Autowired
+    public MemoryJarController(MemoryJarRepository jarRepository, BucketService bucketService) {
+        this.jarRepository = jarRepository;
+        this.bucketService = bucketService;
+    }
+
+    @PostMapping(
+            path="/{id}/memories/new",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public void uploadMemoryFile(@PathVariable("id") String jarId,
+                                       @RequestParam("file") MultipartFile file) {
+        bucketService.uploadMemoryFile(jarId, file);
+    }
+
+    @PostMapping("/new")
     public MemoryJar saveJar(@RequestBody MemoryJar jar) {
         return jarRepository.save(jar);
     }
 
-    @GetMapping("/jar/{id}")
+    @GetMapping("/{id}")
     public MemoryJar getJar(@PathVariable("id") String id) {
         return jarRepository.getJarId(id);
     }
 
-    @GetMapping("/jars/{owner}")
+    @GetMapping("/owner/{owner}")
     public List<MemoryJar> getJarsByOwner(@PathVariable("owner") String owner) {
-        System.out.println("Attempting to retrieve jars by " + owner);
         return jarRepository.getJarsByOwner(owner);
     }
 
-    @DeleteMapping("/jar/{id}")
+    @DeleteMapping("/{id}")
     public String deleteJar(@PathVariable("id") String id) {
         return jarRepository.delete(id);
     }
 
-    @PutMapping("/jar/{id}")
+    @PutMapping("/{id}")
     public String updateJar(@PathVariable("id") String id, @RequestBody MemoryJar jar) {
         return jarRepository.update(id, jar);
     }
