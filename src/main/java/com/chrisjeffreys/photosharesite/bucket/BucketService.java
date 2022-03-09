@@ -20,16 +20,13 @@ public class BucketService {
         this.fileStore = fileStore;
     }
 
-    public void uploadMemoryFile(String jarId, MultipartFile file) {
+    public String uploadMemoryFile(String jarId, MultipartFile file) {
         // 1. Check if image is not empty
-        // 2. If file is an image
-        // 3. The user exists in our database
-        // 4. Grab some metadata from file if any
-        // 5. Store the image in s3 and update DB with s3 image link
+        // 2. If file is an image (TODO: Test if Video can be accepted)
+        // 3. Grab some metadata from file if any
+        // 4. Store the image in s3 and update DB with s3 image link
         if (!file.isEmpty() && file.getContentType().contains("image")) {
             System.out.println("Valid image file");
-//            UserProfile user = userProfileDataAccessService.getUser(userProfileId);
-//            System.out.println("User Profile ID " + userProfileId + " exists");
 
             Map<String, String> metadata = new HashMap<>();
             metadata.put("Content-Type", file.getContentType());
@@ -40,7 +37,7 @@ public class BucketService {
 
             try {
                 fileStore.save(path, filename, Optional.of(metadata), file.getInputStream());
-//                user.setUserProfileImageLink(filename);
+                return filename;
             } catch (IOException e) {
                 throw new IllegalStateException(e);
             }

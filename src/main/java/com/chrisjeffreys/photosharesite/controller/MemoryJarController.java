@@ -29,9 +29,9 @@ public class MemoryJarController {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public void uploadMemoryFile(@PathVariable("id") String jarId,
+    public String uploadMemoryFile(@PathVariable("id") String jarId,
                                        @RequestParam("file") MultipartFile file) {
-        bucketService.uploadMemoryFile(jarId, file);
+        return bucketService.uploadMemoryFile(jarId, file);
     }
 
     @PostMapping("/new")
