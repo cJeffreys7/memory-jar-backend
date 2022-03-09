@@ -1,8 +1,6 @@
 package com.chrisjeffreys.photosharesite.bucket;
 
 import com.chrisjeffreys.photosharesite.filestore.FileStore;
-import com.chrisjeffreys.photosharesite.profile.UserProfile;
-import com.chrisjeffreys.photosharesite.profile.UserProfileDataAccessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
