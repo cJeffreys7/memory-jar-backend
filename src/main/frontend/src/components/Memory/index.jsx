@@ -27,7 +27,7 @@ const theme = createTheme({
     }
 })
 
-const Memory = ({ memoryJar }) => {
+const Memory = ({ memoryJar, showFavoritesOnly }) => {
     const [slideIndex, setSlideIndex] = useState(0);
     const [randomMemoryFavorited, setRandomMemoryFavorited] = useState(false);
 
