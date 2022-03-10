@@ -37,7 +37,8 @@ public class BucketService {
                 fileStore.save(path, filename, Optional.of(metadata), file.getInputStream());
                 return filename;
             } catch (IOException e) {
-                throw new IllegalStateException(e);
+//                throw new IllegalStateException(e);
+                return "ERROR" + e.getMessage();
             }
         } else throw new IllegalStateException("Invalid file");
     }

@@ -8,6 +8,7 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
+import com.chrisjeffreys.photosharesite.datamodel.Memory;
 import com.chrisjeffreys.photosharesite.datamodel.MemoryJar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -31,6 +32,7 @@ public class MemoryJarRepository {
     }
 
     public MemoryJar getJarId(String jarId) {
+        final MemoryJar jar =  dynamoDBMapper.load(MemoryJar.class, jarId);
         return dynamoDBMapper.load(MemoryJar.class, jarId);
     }
 
