@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Slider from 'react-slick';
 
 import defaultImg from '../../assets/memoryjar_logo_dark.svg';
@@ -26,7 +26,7 @@ const configIconButton = {
     icon: <FavoriteIcon />
 }
 
-const Memory = ({ currentImg, previousImg }) => {
+const Memory = ({ memoryJar }) => {
 
     const settings = {
         autoplay: true,
@@ -34,6 +34,7 @@ const Memory = ({ currentImg, previousImg }) => {
         fade: true,
         speed: 1500,
         infinite: true,
+        pauseOnHover: true,
         className: 'carousel'
     };
 
@@ -42,7 +43,11 @@ const Memory = ({ currentImg, previousImg }) => {
             <div className='border'>
                 <div className='image'>
                     <Slider {...settings}>
-                        <div className='current-image'>
+                        {memoryJar ? 
+                            memoryJar.data.memories.map(memory => <img src={`http://localhost:8080/jars/${memoryJar.data.jarId}/memories/${memory.filename}`} alt={memory.title} />)
+                            : <img src={defaultImg} alt="Memory Jar Icon" />
+                        }
+                        {/* <div className='current-image'>
                             {
                                 currentImg ? currentImg : 
                                 <img src={defaultImg} alt="Memory Jar Icon" />
@@ -53,7 +58,7 @@ const Memory = ({ currentImg, previousImg }) => {
                                 previousImg ? previousImg : 
                                 <img src={defaultImg} alt="Memory Jar Icon" />
                             }
-                        </div>
+                        </div> */}
                     </Slider>
                 </div>
                 <div className='favorite-button-wrapper'>
