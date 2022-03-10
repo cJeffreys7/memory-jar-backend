@@ -8,26 +8,9 @@ const Dropzone = ({ jarId, handleAddFile }) => {
     const [image, setImage] = useState('');
 
     const onDrop = useCallback(acceptedFiles => {
-    const file = acceptedFiles[0];
-    handleAddFile(file);
-    setImage(URL.createObjectURL(file));
-    // const formData = new FormData();
-    // file param must be the same as api param
-    // formData.append("file", file);
-    // axios.post(
-    //     `http://localhost:8080/jars/upload/${jarId}/memories`,
-    //     formData,
-    //     {
-    //         headers: {
-    //             "Content-Type": "multipart/form-data"
-    //         }
-    //     }
-    // ).then(() => {
-    //     console.log('file uploaded successfully');
-    // })
-    // .catch((err) => {
-    //     console.log(err);
-    // })
+        const file = acceptedFiles[0];
+        handleAddFile(file);
+        setImage(URL.createObjectURL(file));
     }, [])
     const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
 

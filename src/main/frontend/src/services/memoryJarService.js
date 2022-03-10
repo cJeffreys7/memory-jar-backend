@@ -4,7 +4,7 @@ const baseUrl = 'http://localhost:8080'
 
 const getJar = async (jarId) => {
     try {
-        const result = axios.get(`${baseUrl}/jars/${jarId}`);
+        const result = await axios.get(`${baseUrl}/jars/${jarId}`);
         console.log('Memory Jar retrieved: ', result);
         return result;
     } catch (err) {

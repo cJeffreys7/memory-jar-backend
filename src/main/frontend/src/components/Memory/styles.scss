@@ -3,16 +3,41 @@
     margin: 0 2vw;
 
     .border {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
         border: 2px solid rgb(196, 196, 196);
+        height: 292px;
         padding: 16px;
 
-        img {
-            height: 100%;
+        .image {
+            height: 256px;
+            width: 256px;
+
+                .slick-slide {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 256px;
+                    height: 256px;
+
+                    img {
+                        max-width: 256px;
+                        max-height: 256px;
+                    }
+                }
         }
 
-        .favorite-button {
-            display: flex;
-            justify-content: flex-end;
+
+        .favorite-button-wrapper {
+            width: 100%;
+
+            .favorite-button {
+                display: flex;
+                justify-content: flex-end;
+                align-items: flex-end;
+            }
         }
     }
 
