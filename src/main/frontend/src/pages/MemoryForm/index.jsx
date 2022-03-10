@@ -17,7 +17,8 @@ const initialErrors = {};
 
 const initialFormData = {
     title: '',
-    description: ''
+    description: '',
+    isFavorited: false
 };
 
 const MemoryForm = (props) => {

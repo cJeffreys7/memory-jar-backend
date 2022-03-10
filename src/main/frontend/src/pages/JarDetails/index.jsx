@@ -60,16 +60,17 @@ const JarDetails = () => {
 
     return (
         <div className='jar-wrapper'>
-            <h1>Memory Jar Title</h1>
+            <h1>{memoryJar.data.title}</h1>
             <MemoryJarActionBar jarId={id}/>
-            <h2>Favorite Memories</h2>
+            <h2>Favorite {memoryJar.data.title} Memories</h2>
             <Memory />
-            <IconButton {...configPopMemoryIconButton} handleClick={handleClick}/>
-            <h2>Open another memory</h2>
+            {/* <IconButton {...configPopMemoryIconButton} handleClick={handleClick}/>
+            <h2>Open another memory</h2> */}
             {/* <Memory currentImg={currentRandomMemory} previousImg={previousRandomMemory} /> */}
+            <h2>{memoryJar.data.title} Memories</h2>
             <Memory memoryJar={memoryJar} />
-            <IconButton {...configPopMemoryIconButton} handleClick={handleClick}/>
-            <h2>Open another memory</h2>
+            {/* <IconButton {...configPopMemoryIconButton} handleClick={handleClick}/>
+            <h2>Open another memory</h2> */}
         </div>
     );
 };

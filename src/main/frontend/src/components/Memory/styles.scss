@@ -1,3 +1,5 @@
+$full-height: 512px;
+
 .memory-wrapper {
     width: 95%;
     margin: 0 2vw;
@@ -8,25 +10,41 @@
         justify-content: space-between;
         align-items: center;
         border: 2px solid rgb(196, 196, 196);
-        height: 292px;
+        height: fit-content;
         padding: 16px;
 
         .image {
-            height: 256px;
-            width: 256px;
+            height: 100%;
+            width: 100%;
 
-                .slick-slide {
+            .slick-prev {
+                background-color: black;
+                padding-top: 2px;
+                width: 24px;
+                height: 32px;
+            }
+
+            .slick-next {
+                background-color: black;
+                padding-top: 2px;
+                width: 24px;
+                height: 32px;
+            }
+
+            .slick-slide {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                div {
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    width: 256px;
-                    height: 256px;
-
-                    img {
-                        max-width: 256px;
-                        max-height: 256px;
-                    }
+                    position: relative;
+                    max-height: $full-height;
+                    overflow: hidden;
                 }
+            }
         }
 
 

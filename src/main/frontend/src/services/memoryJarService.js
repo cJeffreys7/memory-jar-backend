@@ -63,6 +63,10 @@ const saveMemory = async (jarId, memoryData, file) => {
     .catch((err) => {
         console.log(err);
     })
+    if (!filename || filename.includes("ERROR")) {
+        console.log('Unable to upload file, aborting updating Jar with new memory ', filename);
+        return false;
+    }
     memoryData = {
         ...memoryData,
         type: file.type,
@@ -75,6 +79,17 @@ const saveMemory = async (jarId, memoryData, file) => {
     const result = await updateJar(jarId, currentJar.data);
     return result;
 }
+
+const favoriteMemory = async (memoryJar, filename, isFavorited) => {
+    console.log('Favoriting Memory of Memory Jar: ', memoryJar);
+    memoryJar.data.memories.map(memory => {
+        if (memory.filename === filename) {
+            memory.isFavorited = isFavorited;
+        };
+    });
+    const result = await updateJar(memoryJar.data.jarId, memoryJar.data);
+    return result;
+};
 
 const updateJar = async (jarId, memoryJarData) => {
     try {
@@ -96,5 +111,6 @@ export {
     getMemory,
     saveJar,
     saveMemory,
+    favoriteMemory,
     updateJar
 }

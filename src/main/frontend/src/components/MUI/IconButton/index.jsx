@@ -3,11 +3,15 @@ import Button from '@mui/material/Button';
 import { ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material';
 
-function IconButton({ theme, color, icon, handleClick }) {
+function IconButton({ theme, color, icon, handleClick, isPressed }) {
     const [pressed, setPressed] = useState(false);
 
     const onClick = () => {
-        setPressed(!pressed);
+        // if (isPressed === null) setPressed(!pressed);
+        if (isPressed === null) {
+            console.log('isPressed is null, use pressed state instead');
+            setPressed(!pressed)
+        };
         if (handleClick) handleClick();
     }
 
@@ -25,7 +29,7 @@ function IconButton({ theme, color, icon, handleClick }) {
     return (
         <ThemeProvider theme={theme ? theme : defaultTheme}>
             <Button
-                color={color ? color : pressed ? "primary" : "secondary"}
+                color={color ? color : isPressed !== null ? isPressed ? "primary" : "secondary" : pressed ? "primary" : "secondary"}
                 onClick={onClick}
             >
                 {icon && icon}
