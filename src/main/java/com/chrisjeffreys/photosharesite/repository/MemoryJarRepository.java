@@ -24,7 +24,7 @@ public class MemoryJarRepository {
         this.dynamoDBMapper = dynamoDBMapper;
     }
 
-    public MemoryJar save(MemoryJar jar) {
+    public MemoryJar saveJar(MemoryJar jar) {
         dynamoDBMapper.save(jar);
         return jar;
     }
@@ -47,19 +47,19 @@ public class MemoryJarRepository {
         }
     }
 
-    public String delete (String jarId) {
+    public String deleteJar(String jarId) {
         MemoryJar jar = dynamoDBMapper.load(MemoryJar.class, jarId);
         dynamoDBMapper.delete(jar);
         return "Jar deleted!";
     }
 
-    public String update (String jarId, MemoryJar jar) {
+    public MemoryJar updateJar(String jarId, MemoryJar jar) {
         dynamoDBMapper.save(jar,
                 new DynamoDBSaveExpression()
                         .withExpectedEntry("jarId",
                                 new ExpectedAttributeValue(
                                         new AttributeValue().withS(jarId)
                                 )));
-        return jarId;
+        return jar;
     }
 }

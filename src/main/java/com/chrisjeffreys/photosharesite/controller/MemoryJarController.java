@@ -36,7 +36,7 @@ public class MemoryJarController {
 
     @PostMapping("/new")
     public MemoryJar saveJar(@RequestBody MemoryJar jar) {
-        return jarRepository.save(jar);
+        return jarRepository.saveJar(jar);
     }
 
     @GetMapping("/{id}")
@@ -58,11 +58,11 @@ public class MemoryJarController {
 
     @DeleteMapping("/{id}")
     public String deleteJar(@PathVariable("id") String id) {
-        return jarRepository.delete(id);
+        return jarRepository.deleteJar(id);
     }
 
     @PutMapping("/{id}")
-    public String updateJar(@PathVariable("id") String id, @RequestBody MemoryJar jar) {
-        return jarRepository.update(id, jar);
+    public MemoryJar updateJar(@PathVariable("id") String id, @RequestBody MemoryJar jar) {
+        return jarRepository.updateJar(id, jar);
     }
 }
