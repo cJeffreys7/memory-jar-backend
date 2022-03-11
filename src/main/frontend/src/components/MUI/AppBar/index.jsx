@@ -7,6 +7,8 @@ import IconButton from '../IconButton';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 
+import './styles.scss'
+
 const NavBar = (props) => {
     const navigate = useNavigate();
     // const MainMenuIconSVG = createSvgIcon(
@@ -33,12 +35,11 @@ const NavBar = (props) => {
     }
 
     return (
-        <div>
+        <div className='app-bar-wrapper'>
             <AppBar position="fixed" color='action' >
                 <Toolbar>
                 <IconButton {...configMainMenuIconButton}/>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                    
                 </Typography>
                 <IconButton {...configNewMemoryJarIconButton}/>
                 <IconButton {...configLogOutIconButton}/>

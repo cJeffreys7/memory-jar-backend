@@ -1,5 +1,6 @@
 $full-height: 90vh;
 $full-slider-width: 92vh;
+$min-height: 40vw;
 
 .memory-wrapper {
     max-width: 90vw;
@@ -35,29 +36,37 @@ $full-slider-width: 92vh;
                     width: 24px;
                     height: 32px;
                 }
-    
-                .slick-track {
-                    display: flex;
-                    align-items: center;
-    
-                    .slick-slide {
+
+                .slick-list {
+                    min-height: $min-height;
+                    min-width: $min-height;
+
+                    .slick-track {
                         display: flex;
-                        justify-content: center;
+                        align-items: center;
         
-                        div {
+                        .slick-slide {
                             display: flex;
                             justify-content: center;
-                            align-items: center;
-                            // position: relative;
-                            // overflow: hidden;
-        
-                            img {
-                                max-height: $full-height;
-                                max-width: $full-height;
+            
+                            div {
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                // position: relative;
+                                // overflow: hidden;
+            
+                                img {
+                                    max-height: $full-height;
+                                    min-height: $min-height;
+                                    max-width: $full-height;
+                                    min-width: $min-height;
+                                }
                             }
                         }
                     }
                 }
+    
             }
         }
 

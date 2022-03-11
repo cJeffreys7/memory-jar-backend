@@ -8,11 +8,11 @@ import ShareIcon from '@mui/icons-material/Share';
 import AddIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import './styles.scss'
+import Style from './styles.scss'
 
 const MemoryJarActionBar = ({ jarId }) => {
     const navigate = useNavigate();
-    const iconSize = 64;
+    const iconSize = Style.fontSize;
 
     const configEditIconButton = {
         icon: <EditIcon sx={{ fontSize: iconSize}}/>
