@@ -1,61 +1,61 @@
-$full-height: 512px;
+$full-height: 90vh;
+$full-slider-width: 92vh;
 
 .memory-wrapper {
-    width: 95%;
-    margin: 0 2vw;
+    max-width: 90vw;
+    display: flex;
+    justify-content: center;
 
     .border {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         align-items: center;
-        height: $full-height;
         border: 2px solid rgb(196, 196, 196);
         padding: 16px;
 
-        .MuiSkeleton-root {
-            height: 100%;
-            width: 100%;
-        }
-
         .image {
-            height: 100%;
-            width: 100%;
 
-            .slick-prev {
-                background-color: black;
-                padding-top: 2px;
-                width: 24px;
-                height: 32px;
-            }
-
-            .slick-next {
-                background-color: black;
-                padding-top: 2px;
-                width: 24px;
-                height: 32px;
-            }
-
-            .slick-slide {
+            .slick-slider {
                 display: flex;
-                justify-content: stretch;
-                align-items: center;
-                // width: 100% !important;
+                justify-content: center;
+                max-width: $full-slider-width;
+                width: 85vw;
 
-                div {
+                .slick-prev {
+                    background-color: black;
+                    padding-top: 2px;
+                    width: 24px;
+                    height: 32px;
+                }
+    
+                .slick-next {
+                    background-color: black;
+                    padding-top: 2px;
+                    width: 24px;
+                    height: 32px;
+                }
+    
+                .slick-track {
                     display: flex;
-                    justify-content: stretch;
                     align-items: center;
-                    position: relative;
-                    max-height: $full-height;
-                    width: 100%;
-                    // width: fit-content;
-                    // height: fit-content;
-                    overflow: hidden;
-
-                    img {
-                        width: 100%;
-                        height: 100%;
+    
+                    .slick-slide {
+                        display: flex;
+                        justify-content: center;
+        
+                        div {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            // position: relative;
+                            // overflow: hidden;
+        
+                            img {
+                                max-height: $full-height;
+                                max-width: $full-height;
+                            }
+                        }
                     }
                 }
             }

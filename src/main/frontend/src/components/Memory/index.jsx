@@ -63,7 +63,7 @@ const Memory = (props) => {
     useEffect(() => {
         setMemories([]);
         const formatMemories = () => {
-            if (!loading && currentMemoryJar.memories) {
+            if (!loading && currentMemoryJar?.memories) {
                 const filteredMemories = showFavoritesOnly ? 
                     currentMemoryJar.memories.filter(memory => memory.isFavorited)
                     : currentMemoryJar.memories;
@@ -94,34 +94,30 @@ const Memory = (props) => {
     return (
         <div className='memory-wrapper'>
             <div className='border'>
-                {!loading ?
-                    <>
-                        <div className='image'>
-                            <Slider {...settings}>
-                                {memories.length ?
-                                    memories.map(
-                                        memory => <img
-                                                    src={memory.image.src}
-                                                    alt={memory.image.alt}
-                                                    key={memory.image.key} 
-                                                    />
-                                                )
-                                    : <img src={defaultImg} alt='Memory Jar Logo'/>
-                                }
-                            </Slider>
-                        </div>
-                        <div className='favorite-button-wrapper'>
-                            <div className='favorite-button'>
-                                <IconButton
-                                    {...configIconButton}
-                                    isPressed={memories ? 
-                                                memories[slideIndex]?.isFavorited
-                                                : false}
-                                />
-                            </div>
-                        </div>
-                    </>
-                    : <Skeleton variant="text" />}
+                <div className='image'>
+                    <Slider {...settings}>
+                        {memories.length ?
+                            memories.map(
+                                memory => <img
+                                            src={memory.image.src}
+                                            alt={memory.image.alt}
+                                            key={memory.image.key} 
+                                            />
+                                        )
+                            : <img src={defaultImg} alt='Memory Jar Logo'/>
+                        }
+                    </Slider>
+                </div>
+                <div className='favorite-button-wrapper'>
+                    <div className='favorite-button'>
+                        <IconButton
+                            {...configIconButton}
+                            isPressed={memories ? 
+                                        memories[slideIndex]?.isFavorited
+                                        : false}
+                        />
+                    </div>
+                </div>
             </div>
         </div>
     );
