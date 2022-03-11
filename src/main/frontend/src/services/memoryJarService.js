@@ -81,7 +81,6 @@ const saveMemory = async (jarId, memoryData, file) => {
 }
 
 const favoriteMemory = async (memoryJar, filename, isFavorited) => {
-    console.log('Favoriting Memory of Memory Jar: ', memoryJar);
     memoryJar.memories.map(memory => {
         if (memory.filename === filename) {
             memory.isFavorited = isFavorited;
@@ -93,15 +92,15 @@ const favoriteMemory = async (memoryJar, filename, isFavorited) => {
 
 const updateJar = async (jarId, memoryJarData) => {
     try {
-        await axios.put(
+        const result = await axios.put(
             `${baseUrl}/jars/${jarId}`,
             memoryJarData
         );
         console.log('Memory Jar updated!');
-        return true;
+        return result;
     } catch (err) {
         console.log('Failed to update Memory Jar: ', err);
-        return false;
+        return null;
     }
 }
 

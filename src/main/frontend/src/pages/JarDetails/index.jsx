@@ -23,7 +23,6 @@ const JarDetails = (props) => {
     useEffect(() => {
         const getMemoryJar = async (jarId) => {
             const newMemoryJar = await memoryJarService.getJar(jarId);
-            console.log('New Memory Jar data: ', newMemoryJar);
             setCurrentMemoryJar(newMemoryJar.data);
         };
 

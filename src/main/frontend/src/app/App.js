@@ -24,12 +24,12 @@ const App = (props) => {
 
   const handleLogout = () => {
     authService.logoutUser();
-    setUser(null);
+    setCurrentUser(null);
     navigate('/');
   }
 
   const handleSignUpOrSignIn = (email) => {
-    const result = setUser(authService.getUser());
+    const result = authService.getUser();
     console.log('User login result: ', result);
     setCurrentUser({
       id: email
@@ -39,7 +39,7 @@ const App = (props) => {
   return (
     <div className="App">
       <>
-        {user && 
+        {currentUser && 
           <AppBar handleLogout={handleLogout}/>
         }
         <Routes>
