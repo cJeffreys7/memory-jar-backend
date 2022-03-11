@@ -3,12 +3,10 @@ package com.chrisjeffreys.photosharesite.repository;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBSaveExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTyped;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
-import com.chrisjeffreys.photosharesite.datamodel.Memory;
 import com.chrisjeffreys.photosharesite.datamodel.MemoryJar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -37,7 +35,6 @@ public class MemoryJarRepository {
     }
 
     public List<MemoryJar> getJarsByOwner(String owner) {
-        System.out.println("Getting jars for " + owner);
         final List<MemoryJar> jars = dynamoDBMapper.scan(MemoryJar.class,
                 new DynamoDBScanExpression()
                         .withFilterConditionEntry("owner",
