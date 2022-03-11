@@ -82,12 +82,12 @@ const saveMemory = async (jarId, memoryData, file) => {
 
 const favoriteMemory = async (memoryJar, filename, isFavorited) => {
     console.log('Favoriting Memory of Memory Jar: ', memoryJar);
-    memoryJar.data.memories.map(memory => {
+    memoryJar.memories.map(memory => {
         if (memory.filename === filename) {
             memory.isFavorited = isFavorited;
         };
     });
-    const result = await updateJar(memoryJar.data.jarId, memoryJar.data);
+    const result = await updateJar(memoryJar.jarId, memoryJar);
     return result;
 };
 

@@ -7,6 +7,7 @@ const userPool = new CognitoUserPool({
 });
 
 const getUser = () => {
+    console.log('Retrieving user');
     return tokenService.getUserFromToken();
 }
 

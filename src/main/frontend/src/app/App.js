@@ -20,7 +20,7 @@ import './App.scss';
 const App = (props) => {
   const { currentUser, setCurrentUser } = props;
   const navigate = useNavigate();
-  const [user, setUser] = useState(authService.getUser());
+  const [user, setUser] = useState(null);
 
   const handleLogout = () => {
     authService.logoutUser();
@@ -29,7 +29,8 @@ const App = (props) => {
   }
 
   const handleSignUpOrSignIn = (email) => {
-    setUser(authService.getUser());
+    const result = setUser(authService.getUser());
+    console.log('User login result: ', result);
     setCurrentUser({
       id: email
     })

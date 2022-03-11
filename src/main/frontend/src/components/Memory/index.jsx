@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { setCurrentMemoryJar } from '../../redux/MemoryJar/memoryJarActions';
 import Slider from 'react-slick';
 import { createTheme } from '@mui/material';
 
@@ -27,9 +29,10 @@ const theme = createTheme({
     }
 })
 
-const Memory = ({ memoryJar, showFavoritesOnly }) => {
+const Memory = (props) => {
+    const { currentMemoryJar, setCurrentMemoryJar, showFavoritesOnly } = props;
     const [slideIndex, setSlideIndex] = useState(0);
-    const [randomMemoryFavorited, setRandomMemoryFavorited] = useState(false);
+    const [memoryFavorited, setMemoryFavorited] = useState(false);
 
     const settings = {
         autoplay: true,
@@ -44,11 +47,20 @@ const Memory = ({ memoryJar, showFavoritesOnly }) => {
     };
 
     const favoriteMemory = () => {
-        console.log('Favoriting Memory ', memoryJar?.data.memories[slideIndex].title);
-        const result = memoryJarService.favoriteMemory(memoryJar, memoryJar.data.memories[slideIndex].filename, !randomMemoryFavorited);
+        console.log('Favoriting Memory ', currentMemoryJar?.memories[slideIndex].title);
+        const result = memoryJarService.favoriteMemory(currentMemoryJar, currentMemoryJar.memories[slideIndex].filename, !memoryFavorited);
         if (result) {
-            memoryJar.data.memories[slideIndex].isFavorited = !randomMemoryFavorited;
-            setRandomMemoryFavorited(!randomMemoryFavorited);
+            //! Dispatch setCurrentMemoryJar
+            let updatedMemories = [...currentMemoryJar.memories];
+            let updatedMemory = {...updatedMemories[slideIndex]};
+            updatedMemory.isFavorited = !memoryFavorited;
+            updatedMemories[slideIndex] = updatedMemory;
+            setCurrentMemoryJar({
+                ...currentMemoryJar,
+                memories: updatedMemories
+            })
+            // currentMemoryJar.memories[slideIndex].isFavorited = !memoryFavorited;
+            setMemoryFavorited(!memoryFavorited);
         };
     }
 
@@ -59,7 +71,9 @@ const Memory = ({ memoryJar, showFavoritesOnly }) => {
     }
 
     useEffect(() => {
-        setRandomMemoryFavorited(memoryJar?.data.memories[slideIndex].isFavorited);
+        if (currentMemoryJar?.memories) {
+            setMemoryFavorited(currentMemoryJar.memories[slideIndex].isFavorited);
+        }
     }, [slideIndex])
 
     return (
@@ -67,15 +81,15 @@ const Memory = ({ memoryJar, showFavoritesOnly }) => {
             <div className='border'>
                 <div className='image'>
                     <Slider {...settings}>
-                        {memoryJar?.data.memories?.length ? 
-                            memoryJar.data.memories.map(memory => <img src={`http://localhost:8080/jars/${memoryJar.data.jarId}/memories/${memory.filename}`} alt={memory.title} key={memory.filename}/>)
+                        {currentMemoryJar?.memories?.length ? 
+                            currentMemoryJar.memories.map(memory => <img src={`http://localhost:8080/jars/${currentMemoryJar.jarId}/memories/${memory.filename}`} alt={memory.title} key={memory.filename}/>)
                             : <img src={defaultImg} alt="Memory Jar Icon" />
                         }
                     </Slider>
                 </div>
                 <div className='favorite-button-wrapper'>
                     <div className='favorite-button'>
-                        <IconButton {...configIconButton} isPressed={randomMemoryFavorited}/>
+                        <IconButton {...configIconButton} isPressed={memoryFavorited}/>
                     </div>
                 </div>
             </div>
@@ -83,4 +97,12 @@ const Memory = ({ memoryJar, showFavoritesOnly }) => {
     );
 };
 
-export default Memory;
+const mapStateToProps = ({ memoryJar }) => ({
+    currentMemoryJar: memoryJar.currentMemoryJar
+});
+
+const mapDispatchToProps = dispatch => ({
+    setCurrentMemoryJar: memoryJar => dispatch(setCurrentMemoryJar(memoryJar))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Memory);
