@@ -24,9 +24,9 @@ const Home = (props) => {
     }, [currentUser.id])
 
     return (
-        <div className='wrapper'>
+        <div className='home-wrapper'>
             <h2>Favorite Memories</h2>
-            <Memory />
+            <Memory showFavoritesOnly={true} />
             <h2>Recent Memories</h2>
             <Memory />
             <div className='memory-jar-previews'>

@@ -1,5 +1,10 @@
-.wrapper {
-    margin-top: 64px;
+.home-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 64px 2vw 0;
+
 
     .memory-jar-previews {
         margin-top: 32px;

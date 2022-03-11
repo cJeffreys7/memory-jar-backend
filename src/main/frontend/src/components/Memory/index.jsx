@@ -10,6 +10,7 @@ import IconButton from '../MUI/IconButton';
 // assets
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import defaultImg from '../../assets/memoryjar_logo_dark.svg';
+import Skeleton from '@mui/material/Skeleton';
 
 // services
 import * as memoryJarService from '../../services/memoryJarService'
@@ -30,7 +31,7 @@ const theme = createTheme({
 })
 
 const Memory = (props) => {
-    const { currentMemoryJar, setCurrentMemoryJar, showFavoritesOnly, showRandomMemory, showRandomFavoriteMemory } = props;
+    const { currentMemoryJar, setCurrentMemoryJar, showFavoritesOnly, showRandomMemory, showRandomFavoriteMemory, loading } = props;
     const [slideIndex, setSlideIndex] = useState(0);
     const [memories, setMemories] = useState([]);
 
@@ -47,24 +48,26 @@ const Memory = (props) => {
     };
 
     const favoriteMemory = async () => {
-        const result = await memoryJarService.favoriteMemory(
-                currentMemoryJar,
-                currentMemoryJar.memories[slideIndex].filename,
-                !currentMemoryJar.memories[slideIndex].isFavorited
-            );
-        if (result) {
-            setCurrentMemoryJar(result.data);
-        };
+        if (memories.length) {
+            const result = await memoryJarService.favoriteMemory(
+                    currentMemoryJar,
+                    currentMemoryJar.memories[slideIndex].filename,
+                    !currentMemoryJar.memories[slideIndex].isFavorited
+                );
+            if (result) {
+                setCurrentMemoryJar(result.data);
+            };
+        }
     }
 
     useEffect(() => {
+        setMemories([]);
         const formatMemories = () => {
-            if (currentMemoryJar.memories) {
-                // console.log('Current memory jar memories: ', currentMemoryJar.memories);
+            if (!loading && currentMemoryJar.memories) {
                 const filteredMemories = showFavoritesOnly ? 
                     currentMemoryJar.memories.filter(memory => memory.isFavorited)
                     : currentMemoryJar.memories;
-                console.log(`Filtered memories for ${showFavoritesOnly ? 'Favorite Memories' : 'All Memories'}`, filteredMemories);
+                // console.log(`Filtered memories for ${showFavoritesOnly ? 'Favorite Memories' : 'All Memories'}`, filteredMemories);
                 const mappedMemories = filteredMemories.map(memory => 
                     ({
                         image: {
@@ -91,19 +94,34 @@ const Memory = (props) => {
     return (
         <div className='memory-wrapper'>
             <div className='border'>
-                <div className='image'>
-                    <Slider {...settings}>
-                        {
-                            memories.length ? memories.map(memory => <img src={memory.image.src} alt={memory.image.alt} key={memory.image.key} />)
-                            : <img src={defaultImg} alt="Memory Jar Icon" />
-                        }
-                    </Slider>
-                </div>
-                <div className='favorite-button-wrapper'>
-                    <div className='favorite-button'>
-                        <IconButton {...configIconButton} isPressed={memories ? memories[slideIndex]?.isFavorited : false}/>
-                    </div>
-                </div>
+                {!loading ?
+                    <>
+                        <div className='image'>
+                            <Slider {...settings}>
+                                {memories.length ?
+                                    memories.map(
+                                        memory => <img
+                                                    src={memory.image.src}
+                                                    alt={memory.image.alt}
+                                                    key={memory.image.key} 
+                                                    />
+                                                )
+                                    : <img src={defaultImg} alt='Memory Jar Logo'/>
+                                }
+                            </Slider>
+                        </div>
+                        <div className='favorite-button-wrapper'>
+                            <div className='favorite-button'>
+                                <IconButton
+                                    {...configIconButton}
+                                    isPressed={memories ? 
+                                                memories[slideIndex]?.isFavorited
+                                                : false}
+                                />
+                            </div>
+                        </div>
+                    </>
+                    : <Skeleton variant="text" />}
             </div>
         </div>
     );

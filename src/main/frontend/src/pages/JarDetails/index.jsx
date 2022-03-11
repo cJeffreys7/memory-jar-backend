@@ -12,9 +12,12 @@ import StorageIcon from '@mui/icons-material/Storage';
 // services
 import * as memoryJarService from '../../services/memoryJarService';
 
+import './styles.scss'
+
 const JarDetails = (props) => {
     const { id } = useParams();
     const { currentMemoryJar, setCurrentMemoryJar } = props;
+    const [loading, setLoading] = useState(true);
 
     const configPopMemoryIconButton = {
         icon: <StorageIcon sx={{ fontSize: 128}}/>
@@ -27,16 +30,17 @@ const JarDetails = (props) => {
         };
 
         getMemoryJar(id);
-    }, [])
+        setLoading(false);
+    }, [id])
 
     return (
-        <div className='jar-wrapper'>
+        <div className='jar-details-wrapper'>
             <h1>{currentMemoryJar?.title}</h1>
             <MemoryJarActionBar jarId={id}/>
             <h2>Favorite {currentMemoryJar?.title} Memories</h2>
-            <Memory showFavoritesOnly={true} />
+            <Memory showFavoritesOnly={true} loading={loading} />
             <h2>{currentMemoryJar?.title} Memories</h2>
-            <Memory />
+            <Memory loading={loading} />
         </div>
     );
 };
