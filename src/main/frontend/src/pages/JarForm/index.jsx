@@ -20,31 +20,15 @@ const Jar = (props) => {
     const [errors, setErrors] = useState(initialErrors);
     const [formData, setFormData] = useState({
         owner: currentUser.id,
-        title: currentMemoryJar ? currentMemoryJar.title : '',
-        description: currentMemoryJar ? currentMemoryJar.description : ''
+        title: '',
+        description: ''
     });
     const [viewerPermissions, setViewerPermissions] = useState({
         email: '',
-        viewers: currentMemoryJar ? currentMemoryJar.viewers : [],
-        admins: currentMemoryJar ? currentMemoryJar.admins : []
+        viewers: [],
+        admins: []
     });
     const [emailSubmission, setEmailSubmission] = useState(false)
-
-    // const initialFormData = {
-    //     // owner: '',
-    //     title: '',
-    //     description: ''
-    // };
-    
-    // const initialViewerPermissions = {
-    //     email: '',
-    //     viewers: currentMemoryJar ? currentMemoryJar.admins.filter(admin => admin !== currentMemoryJar.owner).map(admin => {
-    //         return {
-    //             email: admin,
-    //             editPermissions: true
-    //         }
-    //     }) : []
-    // };
 
     const handleChange = e => {
         setFormData({
@@ -179,6 +163,22 @@ const Jar = (props) => {
         formCheck();
     }, [title, description, email]);
 
+    // Reset form data if currentMemoryJar is cleared
+    // Edit Memory Jar to New Memory Jar
+    useEffect(() => {
+        setFormData({
+            owner: currentUser.id,
+            title: currentMemoryJar ? currentMemoryJar.title : '',
+            description: currentMemoryJar ? currentMemoryJar.description : ''
+        });
+        setViewerPermissions({
+            email: '',
+            viewers: currentMemoryJar ? currentMemoryJar.viewers : [],
+            admins: currentMemoryJar ? currentMemoryJar.admins : []
+        });
+    }, [currentMemoryJar])
+
+
     const titleValidation = () => {
         let error = {};
         if (!title) {
@@ -255,7 +255,7 @@ const Jar = (props) => {
                         className='input'
                         name='title'
                         type='text'
-                        label='New Memory Jar Name'
+                        label={currentMemoryJar ? 'Memory Jar Name' : 'New Memory Jar Name'}
                         error={titleError}
                         helperText={titleError ? titleHelperText : ''}
                         value={title}
