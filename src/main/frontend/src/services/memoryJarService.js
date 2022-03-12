@@ -104,6 +104,19 @@ const updateJar = async (jarId, memoryJarData) => {
     }
 }
 
+const deleteJar = async (jarId) => {
+    try {
+        const result = await axios.delete(
+            `${baseUrl}/jars/${jarId}`
+        );
+        console.log(result);
+        return result;
+    } catch (err) {
+        console.log('Failed to update Memory Jar: ', err);
+        return null;
+    }
+}
+
 export {
     getJar,
     getJarsByOwner,
@@ -111,5 +124,6 @@ export {
     saveJar,
     saveMemory,
     favoriteMemory,
-    updateJar
+    updateJar,
+    deleteJar
 }

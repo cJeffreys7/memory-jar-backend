@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { CognitoUserPool, CognitoUser } from 'amazon-cognito-identity-js';
+import { createTheme } from '@mui/material';
 
 // components
 import FormInput from '../../components/FormInput';
 import Button from '../../components/MUI/StyledButton';
-import { createTheme } from '@mui/material';
 
 // services
 import * as authService from '../../services/authService'

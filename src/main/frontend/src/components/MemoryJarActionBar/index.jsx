@@ -10,7 +10,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 import Style from './styles.scss'
 
-const MemoryJarActionBar = ({ jarId }) => {
+const MemoryJarActionBar = ({ jarId, deleteJar }) => {
     const navigate = useNavigate();
     const iconSize = Style.fontSize;
 
@@ -45,6 +45,7 @@ const MemoryJarActionBar = ({ jarId }) => {
 
     const deleteMemoryJar = e => {
         console.log('Delete Memory Jar action pressed');
+        deleteJar();
     };
 
     return (
