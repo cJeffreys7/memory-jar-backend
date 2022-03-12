@@ -1,6 +1,7 @@
 package com.chrisjeffreys.photosharesite.controller;
 
 import com.chrisjeffreys.photosharesite.bucket.BucketService;
+import com.chrisjeffreys.photosharesite.datamodel.Memory;
 import com.chrisjeffreys.photosharesite.datamodel.MemoryJar;
 import com.chrisjeffreys.photosharesite.repository.MemoryJarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,8 @@ public class MemoryJarController {
     }
 
     @GetMapping("/{id}")
-    public MemoryJar getJar(@PathVariable("id") String id) {
-        return jarRepository.getJarId(id);
+    public MemoryJar getJar(@PathVariable("id") String jarId) {
+        return jarRepository.getJarById(jarId);
     }
 
     @GetMapping("/owner/{owner}")
@@ -57,12 +58,28 @@ public class MemoryJarController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteJar(@PathVariable("id") String id) {
-        return jarRepository.deleteJar(id);
+    public String deleteJar(@PathVariable("id") String jarId) {
+        Boolean deletedFilepath = bucketService.deleteFilepath(jarId);
+        System.out.println("Deleted filepath " + jarId + "/ : " + deletedFilepath);
+        return jarRepository.deleteJar(jarId);
+    }
+
+    @DeleteMapping("/{id}/memories/{memoryId}")
+    public Boolean deleteMemory(@PathVariable("id") String jarId,
+                               @PathVariable("memoryId") String filename) {
+        MemoryJar jar = jarRepository.getJarById(jarId);
+        List<Memory> updatedMemories = jar.getMemories();
+        updatedMemories.stream().filter(memory -> {
+            return memory.getFilename() != filename;
+        });
+        jar.setMemories(updatedMemories);
+        MemoryJar updatedJar = jarRepository.updateJar(jarId, jar);
+        System.out.println("Removed memory from jar: " + updatedJar);
+        return bucketService.deleteFile(jarId, filename);
     }
 
     @PutMapping("/{id}")
-    public MemoryJar updateJar(@PathVariable("id") String id, @RequestBody MemoryJar jar) {
-        return jarRepository.updateJar(id, jar);
+    public MemoryJar updateJar(@PathVariable("id") String jarId, @RequestBody MemoryJar jar) {
+        return jarRepository.updateJar(jarId, jar);
     }
 }

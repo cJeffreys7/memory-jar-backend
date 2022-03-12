@@ -1,5 +1,6 @@
 package com.chrisjeffreys.photosharesite.bucket;
 
+import com.amazonaws.AmazonClientException;
 import com.chrisjeffreys.photosharesite.filestore.FileStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class BucketService {
             String filename = String.format("%s-%s", file.getOriginalFilename(), UUID.randomUUID());
 
             try {
-                fileStore.save(path, filename, Optional.of(metadata), file.getInputStream());
+                fileStore.saveFile(path, filename, Optional.of(metadata), file.getInputStream());
                 return filename;
             } catch (IOException e) {
 //                throw new IllegalStateException(e);
@@ -48,6 +49,19 @@ public class BucketService {
                 BucketName.PROFILE_IMAGE.getBucketName(),
                 jarId);
         final Optional<String> bucketFilename = Optional.ofNullable(filename);
-        return bucketFilename.map(key -> fileStore.download(path, key)).orElse(new byte[0]);
+        return bucketFilename.map(key -> fileStore.downloadFile(path, key)).orElse(new byte[0]);
+    }
+
+    public Boolean deleteFile(String jarId, String filename) {
+        String bucket = BucketName.PROFILE_IMAGE.getBucketName();
+        String file = String.format("%s/%s",
+                jarId,
+                filename);
+        return fileStore.deleteFile(bucket, file);
+    }
+
+    public Boolean deleteFilepath(String filepath) {
+        String bucket = BucketName.PROFILE_IMAGE.getBucketName();
+        return fileStore.deleteFilepath(bucket, filepath);
     }
 }
