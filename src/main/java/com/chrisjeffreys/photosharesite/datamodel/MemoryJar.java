@@ -19,6 +19,9 @@ public class MemoryJar {
     private List<String> admins;
 
     @DynamoDBAttribute
+    private List<String> viewers;
+
+    @DynamoDBAttribute
     private String title;
 
     @DynamoDBAttribute
@@ -30,9 +33,10 @@ public class MemoryJar {
     public MemoryJar() {
     }
 
-    public MemoryJar(String owner, List<String> admins, String title, String description, List<Memory> memories) {
+    public MemoryJar(String owner, List<String> admins, List<String> viewers, String title, String description, List<Memory> memories) {
         this.owner = owner;
         this.admins = admins;
+        this.viewers = viewers;
         this.title = title;
         this.description = description;
         this.memories = memories;
@@ -60,6 +64,14 @@ public class MemoryJar {
 
     public void setAdmins(List<String> admins) {
         this.admins = admins;
+    }
+
+    public List<String> getViewers() {
+        return viewers;
+    }
+
+    public void setViewers(List<String> viewers) {
+        this.viewers = viewers;
     }
 
     public String getTitle() {
@@ -91,11 +103,11 @@ public class MemoryJar {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MemoryJar memoryJar = (MemoryJar) o;
-        return jarId.equals(memoryJar.jarId) && owner.equals(memoryJar.owner) && admins.equals(memoryJar.admins) && title.equals(memoryJar.title) && Objects.equals(description, memoryJar.description) && Objects.equals(memories, memoryJar.memories);
+        return jarId.equals(memoryJar.jarId) && owner.equals(memoryJar.owner) && admins.equals(memoryJar.admins) && viewers.equals(memoryJar.viewers) && title.equals(memoryJar.title) && Objects.equals(description, memoryJar.description) && Objects.equals(memories, memoryJar.memories);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(jarId, owner, admins, title, description, memories);
+        return Objects.hash(jarId, owner, admins, viewers, title, description, memories);
     }
 }
