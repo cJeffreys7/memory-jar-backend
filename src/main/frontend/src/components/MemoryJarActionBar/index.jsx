@@ -31,7 +31,7 @@ const MemoryJarActionBar = ({ jarId, deleteJar }) => {
     }
 
     const editMemoryJar = e => {
-        console.log('Edit Memory Jar action pressed');
+        navigate('/jars/new');
     };
 
     const shareMemoryJar = e => {
@@ -39,12 +39,10 @@ const MemoryJarActionBar = ({ jarId, deleteJar }) => {
     };
 
     const addMemoryJar = e => {
-        console.log('Add Memory Jar action pressed');
         navigate(`/jars/${jarId}/memories/new`)
     };
 
     const deleteMemoryJar = e => {
-        console.log('Delete Memory Jar action pressed');
         deleteJar();
     };
 

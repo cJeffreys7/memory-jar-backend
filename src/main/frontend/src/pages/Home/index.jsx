@@ -12,8 +12,8 @@ import * as memoryJarService from '../../services/memoryJarService';
 import './styles.scss'
 
 const Home = (props) => {
-    const { currentUser, clearCurrentMemoryJar } = props
-    const [memoryJars, setMemoryJars] = useState([])
+    const { currentUser, clearCurrentMemoryJar } = props;
+    const [memoryJars, setMemoryJars] = useState([]);
 
     useEffect(() => {
         const getMemoryJars = async () => {

@@ -114,18 +114,22 @@ const Jar = (props) => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        admins.unshift(currentUser.id);
-        const formattedFormData = {
+        if (!currentMemoryJar) admins.unshift(currentUser.id);
+        let formattedFormData = {
             admins: admins,
             viewers: viewers,
             ...formData
         };
-        setFormData({
-            admins: admins,
-            viewers: viewers,
-            ...formData
-        });
-        const result = memoryJarService.saveJar(formattedFormData);
+        let result;
+        if (currentMemoryJar) {
+            formattedFormData = {
+                ...formattedFormData,
+                jarId: currentMemoryJar.jarId
+            }
+            result = memoryJarService.updateJar(currentMemoryJar.jarId, formattedFormData);
+        } else {
+            result = memoryJarService.saveJar(formattedFormData);
+        }
         if (result) navigate('/');
     }
 
@@ -215,7 +219,7 @@ const Jar = (props) => {
                 emailError: true,
                 emailHelperText: 'Please enter an email to view this memory jar'
             };
-        } else if (viewerPermissions.viewers.includes(email.toLowerCase())) {
+        } else if (viewerPermissions?.viewers && viewerPermissions.viewers.includes(email.toLowerCase())) {
             error = {
                 emailError: true,
                 emailHelperText: 'Email already sent to view this memory jar'
