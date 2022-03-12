@@ -57,6 +57,16 @@ const Jar = (props) => {
         });
     };
 
+    const handleRemoveViewer = e => {
+        const updatedAdmins = viewerPermissions.admins.filter(admin => e.target.value !== admin);
+        const updatedViewers = viewerPermissions.viewers.filter(viewer => e.target.value !== viewer);
+        setViewerPermissions({
+            ...viewerPermissions,
+            admins: updatedAdmins,
+            viewers: updatedViewers
+        });
+    }
+
     const handleChangeEmail = e => {
         if (e.target.name !== 'email') {
             let updatedAdmins = [];
@@ -64,28 +74,15 @@ const Jar = (props) => {
                 updatedAdmins = viewerPermissions.admins;
                 updatedAdmins.push(e.target.name);
             } else {
-                updatedAdmins = viewerPermissions.admins.filter(
+                updatedAdmins = viewerPermissions.admins
+                .filter(
                     admin => admin !== e.target.name
-                    );
+                );
             }
             setViewerPermissions({
                 ...viewerPermissions,
                 admins: updatedAdmins
             });
-            // setViewerPermissions({
-            //     ...viewerPermissions,
-            //     viewers: viewers.map(viewer => {
-            //         console.log('Viewer: ', viewer.email, e.target.value);
-            //         if (viewer.email === e.target.name) {
-            //             return {
-            //                 email: e.target.name,
-            //                 editPermissions: e.target.value
-            //             };
-            //         } else {
-            //             return viewer;
-            //         };
-            //     })
-            // });
         } else {
             setViewerPermissions({
                 ...viewerPermissions,
@@ -304,7 +301,13 @@ const Jar = (props) => {
                         <div className='jar-permission-viewers'>
                             {viewerPermissions.viewers && 
                                 viewerPermissions.viewers.map(viewer => (
-                                    <JarViewer key={viewer} email={viewer} canEdit={viewerPermissions.admins.includes(viewer)} handleChange={handleChangeEmail}/>
+                                    <JarViewer
+                                        key={viewer}
+                                        email={viewer}
+                                        canEdit={viewerPermissions.admins.includes(viewer)}
+                                        handleChange={handleChangeEmail}
+                                        handleOnClick={handleRemoveViewer}
+                                    />
                                 ))
                             }
                         </div>

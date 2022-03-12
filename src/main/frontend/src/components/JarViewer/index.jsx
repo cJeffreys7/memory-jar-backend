@@ -4,7 +4,7 @@ import Switch from '@mui/material/Switch';
 
 import './styles.scss'
 
-const JarViewer = ({ email, canEdit, handleChange }) => {
+const JarViewer = ({ email, canEdit, handleChange, handleOnClick }) => {
     const [editPermission, setEditPermission] = useState(Boolean(canEdit));
     const IOSSwitch = styled((props) => (
         <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -64,6 +64,11 @@ const JarViewer = ({ email, canEdit, handleChange }) => {
         handleChange(e);
     }
 
+    const onClick = e => {
+        e.target.value = email;
+        handleOnClick(e);
+    }
+
     return (
         <div className='jar-viewer-wrapper'>
             <div className='jar-viewer-email'>
@@ -77,7 +82,7 @@ const JarViewer = ({ email, canEdit, handleChange }) => {
                 checked={editPermission}
                 onChange={onChange}
             />
-            <Button variant='contained' color='error'>Remove</Button>
+            <Button variant='contained' color='error' onClick={onClick}>Remove</Button>
         </div>
     );
 };
