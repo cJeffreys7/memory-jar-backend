@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { clearCurrentMemoryJar } from '../../redux/MemoryJar/memoryJarActions';
 
 // components
 import Memory from '../../components/Memory';
@@ -11,7 +12,7 @@ import * as memoryJarService from '../../services/memoryJarService';
 import './styles.scss'
 
 const Home = (props) => {
-    const { currentUser } = props
+    const { currentUser, clearCurrentMemoryJar } = props
     const [memoryJars, setMemoryJars] = useState([])
 
     useEffect(() => {
@@ -20,6 +21,7 @@ const Home = (props) => {
             setMemoryJars(ownerJars.data);
         };
 
+        clearCurrentMemoryJar();
         getMemoryJars();
     }, [currentUser.id])
 
@@ -40,8 +42,13 @@ Home.defaultProps = {
     currentUser: null
 }
 
-const mapStateToProps = ({ user }) => ({
-    currentUser: user.currentUser
+const mapStateToProps = ({ user, memoryJar }) => ({
+    currentUser: user.currentUser,
+    currentMemoryJar: memoryJar.currentMemoryJar
 });
 
-export default connect(mapStateToProps, null)(Home);
+const mapDispatchToProps = dispatch => ({
+    clearCurrentMemoryJar: memoryJar => dispatch(clearCurrentMemoryJar(memoryJar))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

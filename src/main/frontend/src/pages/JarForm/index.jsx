@@ -12,29 +12,41 @@ import * as memoryJarService from '../../services/memoryJarService'
 
 import './styles.scss'
 
-const initialFormData = {
-    // owner: '',
-    // admins: '',
-    title: '',
-    description: ''
-};
-
-const initialViewerPermissions = {
-    email: '',
-    viewers: []
-};
-
 const initialErrors = {};
 
 const Jar = (props) => {
     const navigate = useNavigate();
-    const { currentUser } = props;
+    const { currentUser, currentMemoryJar } = props;
     const [errors, setErrors] = useState(initialErrors);
-    const [formData, setFormData] = useState(initialFormData);
-    const [viewerPermissions, setViewerPermissions] = useState(initialViewerPermissions);
+    const [formData, setFormData] = useState({
+        owner: currentUser.id,
+        title: currentMemoryJar ? currentMemoryJar.title : '',
+        description: currentMemoryJar ? currentMemoryJar.description : ''
+    });
+    const [viewerPermissions, setViewerPermissions] = useState({
+        email: '',
+        viewers: currentMemoryJar ? currentMemoryJar.viewers : [],
+        admins: currentMemoryJar ? currentMemoryJar.admins : []
+    });
+    const [emailSubmission, setEmailSubmission] = useState(false)
+
+    // const initialFormData = {
+    //     // owner: '',
+    //     title: '',
+    //     description: ''
+    // };
+    
+    // const initialViewerPermissions = {
+    //     email: '',
+    //     viewers: currentMemoryJar ? currentMemoryJar.admins.filter(admin => admin !== currentMemoryJar.owner).map(admin => {
+    //         return {
+    //             email: admin,
+    //             editPermissions: true
+    //         }
+    //     }) : []
+    // };
 
     const handleChange = e => {
-        console.log('Setting form data');
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
@@ -47,41 +59,54 @@ const Jar = (props) => {
 
     const handleChangeEmail = e => {
         if (e.target.name !== 'email') {
-            console.log('Changing viewer permissions: ', e.target.value);
+            let updatedAdmins = [];
+            if (e.target.value === 'true') {
+                updatedAdmins = viewerPermissions.admins;
+                updatedAdmins.push(e.target.name);
+            } else {
+                updatedAdmins = viewerPermissions.admins.filter(
+                    admin => admin !== e.target.name
+                    );
+            }
             setViewerPermissions({
                 ...viewerPermissions,
-                viewers: viewers.map(viewer => {
-                    console.log('Viewer: ', viewer.email, e.target.value);
-                    if (viewer.email === e.target.name) {
-                        return {
-                            email: e.target.name,
-                            editPermissions: e.target.value
-                        };
-                    } else {
-                        return viewer;
-                    };
-                })
+                admins: updatedAdmins
             });
+            // setViewerPermissions({
+            //     ...viewerPermissions,
+            //     viewers: viewers.map(viewer => {
+            //         console.log('Viewer: ', viewer.email, e.target.value);
+            //         if (viewer.email === e.target.name) {
+            //             return {
+            //                 email: e.target.name,
+            //                 editPermissions: e.target.value
+            //             };
+            //         } else {
+            //             return viewer;
+            //         };
+            //     })
+            // });
         } else {
-            console.log('Adding email');
             setViewerPermissions({
                 ...viewerPermissions,
                 email: e.target.value
+            });
+            setErrors({
+                ...errors,
+                [`${e.target.name}Entry`]: true
             });
         };
     };
 
     const handleEmailInviteSubmit = e => {
         e.preventDefault();
+        setEmailSubmission(true);
         console.log(`Sending invite to ${viewerPermissions.email}`);
         setViewerPermissions({
             ...viewerPermissions,
             viewers: [
                 ...viewers,
-                {
-                    email: viewerPermissions.email,
-                    editPermissions: false
-                }
+                email.toLowerCase()
             ],
             email: ''
         });
@@ -89,26 +114,23 @@ const Jar = (props) => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        const admins = viewerPermissions.viewers.filter(viewer => viewer.editPermissions).map(viewer => viewer.email);
         admins.unshift(currentUser.id);
         const formattedFormData = {
-            owner: currentUser.id,
             admins: admins,
+            viewers: viewers,
             ...formData
         };
         setFormData({
-            owner: currentUser.id,
             admins: admins,
+            viewers: viewers,
             ...formData
         });
-        console.log('Form Data: ', formattedFormData);
-        console.log('New formData: ', formData.value);
         const result = memoryJarService.saveJar(formattedFormData);
         if (result) navigate('/');
     }
 
     const { title, description } = formData;
-    const { email, viewers } = viewerPermissions;
+    const { email, viewers, admins } = viewerPermissions;
 
     const { 
         titleEntry,
@@ -116,7 +138,10 @@ const Jar = (props) => {
         titleHelperText,
         descriptionEntry,
         descriptionError,
-        descriptionHelperText
+        descriptionHelperText,
+        emailEntry,
+        emailError,
+        emailHelperText
     } = errors;
 
     useEffect(() => {
@@ -125,26 +150,33 @@ const Jar = (props) => {
             if (titleEntry) {
                 errors.push({ titleEntry: true });
                 errors.push(titleValidation());
-            }
+            };
             if (descriptionEntry) {
                 errors.push({ descriptionEntry: true });
                 errors.push(descriptionValidation());
-            }
+            };
+            if (emailSubmission) {
+                errors.push({ emailEntry: false })
+                setEmailSubmission(false);
+            } else if (emailEntry) {
+                errors.push({ emailEntry: true });
+                errors.push(emailValidation());
+            };
             let formErrors = {};
             errors.forEach(error => {
                 formErrors = {
                     ...formErrors,
                     ...error
-                }
-            })
+                };
+            });
             setErrors({
                 ...errors,
                 ...formErrors
-            })
+            });
         }
 
         formCheck();
-    }, [title, description]);
+    }, [title, description, email]);
 
     const titleValidation = () => {
         let error = {};
@@ -176,9 +208,43 @@ const Jar = (props) => {
         return error;
     }
 
+    const emailValidation = () => {
+        let error = {};
+        if (!email) {
+            error = {
+                emailError: true,
+                emailHelperText: 'Please enter an email to view this memory jar'
+            };
+        } else if (viewerPermissions.viewers.includes(email.toLowerCase())) {
+            error = {
+                emailError: true,
+                emailHelperText: 'Email already sent to view this memory jar'
+            };
+        } else {
+            const emailExpression = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/g;
+            const emailRegExp = new RegExp(emailExpression);
+            if (email.match(emailRegExp)) {
+                error = {
+                    emailError: false
+                };
+            } else {
+                error = {
+                    emailError: true,
+                    emailHelperText: 'Invalid email'
+                };
+            };
+        };
+
+        return error;
+    }
+
     const isFormInvalid = () => {
         return !(title && description)
-    }
+    };
+
+    const isEmailInvalid = () => {
+        return (!email || errors.emailError)
+    };
 
     return (
         <div className='jar-wrapper'>
@@ -216,13 +282,13 @@ const Jar = (props) => {
                         name='email'
                         type='text'
                         label='Email'
-                        // error={nameError}
-                        // helperText={nameError ? nameHelperText : ''}
+                        error={emailError}
+                        helperText={emailError ? emailHelperText : ''}
                         value={email}
                         onChange={handleChangeEmail}
                         variant='standard'
                     />
-                    <Button type='submit' label='Share' handleClick={handleEmailInviteSubmit}/>
+                    <Button type='submit' label='Share' handleClick={handleEmailInviteSubmit} disabled={isEmailInvalid()}/>
                 </form>
                 <div className='jar-permissions'>
                     <div className='permissions-headers'>
@@ -234,7 +300,7 @@ const Jar = (props) => {
                         <div className='jar-permission-viewers'>
                             {viewerPermissions.viewers && 
                                 viewerPermissions.viewers.map(viewer => (
-                                    <JarViewer key={viewer.email} email={viewer.email} canEdit={viewer.editPermissions} handleChange={handleChangeEmail}/>
+                                    <JarViewer key={viewer} email={viewer} canEdit={viewerPermissions.admins.includes(viewer)} handleChange={handleChangeEmail}/>
                                 ))
                             }
                         </div>
@@ -255,8 +321,9 @@ Jar.defaultProps = {
     currentUser: null
 };
 
-const mapStateToProps = ({ user }) => ({
-    currentUser: user.currentUser
+const mapStateToProps = ({ user, memoryJar }) => ({
+    currentUser: user.currentUser,
+    currentMemoryJar: memoryJar.currentMemoryJar
 });
 
 export default connect(mapStateToProps, null)(Jar);

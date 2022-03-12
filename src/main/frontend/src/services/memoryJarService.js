@@ -109,7 +109,7 @@ const deleteJar = async (jarId) => {
         const result = await axios.delete(
             `${baseUrl}/jars/${jarId}`
         );
-        console.log(result);
+        console.log(result.data);
         return result;
     } catch (err) {
         console.log('Failed to update Memory Jar: ', err);

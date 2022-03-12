@@ -27,7 +27,6 @@ const JarDetails = (props) => {
     };
 
     const openDeleteJarModal = () => {
-        console.log('Open Modal');
         setDeleteModal(true);
     }
 
@@ -36,7 +35,6 @@ const JarDetails = (props) => {
     }
 
     const deleteJar = async () => {
-        console.log('Delete Jar');
         const result = await memoryJarService.deleteJar(id);
         if (result) navigate('/');
     }

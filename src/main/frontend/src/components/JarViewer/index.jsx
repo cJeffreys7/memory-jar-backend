@@ -58,6 +58,7 @@ const JarViewer = ({ email, canEdit, handleChange }) => {
         }));
 
     const onChange = e => {
+        e.target.name = email;
         e.target.value = !editPermission;
         setEditPermission(!editPermission);
         handleChange(e);

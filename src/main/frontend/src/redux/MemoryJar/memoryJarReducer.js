@@ -11,6 +11,8 @@ const memoryJarReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 currentMemoryJar: action.payload
             };
+        case memoryJarTypes.CLEAR_CURRENT_MEMORY_JAR:
+            return INITIAL_STATE
         default:
             return state;
     };
