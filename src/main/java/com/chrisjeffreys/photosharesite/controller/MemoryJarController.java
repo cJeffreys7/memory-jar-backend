@@ -65,17 +65,20 @@ public class MemoryJarController {
     }
 
     @DeleteMapping("/{id}/memories/{memoryId}")
-    public Boolean deleteMemory(@PathVariable("id") String jarId,
+    public MemoryJar deleteMemory(@PathVariable("id") String jarId,
                                @PathVariable("memoryId") String filename) {
         MemoryJar jar = jarRepository.getJarById(jarId);
         List<Memory> updatedMemories = jar.getMemories();
-        updatedMemories.stream().filter(memory -> {
-            return memory.getFilename() != filename;
-        });
+        for (Memory m : updatedMemories) {
+            if (m.getFilename().contentEquals(filename)) {
+                updatedMemories.remove(m);
+                break;
+            }
+        }
         jar.setMemories(updatedMemories);
         MemoryJar updatedJar = jarRepository.updateJar(jarId, jar);
-        System.out.println("Removed memory from jar: " + updatedJar);
-        return bucketService.deleteFile(jarId, filename);
+        Boolean result = bucketService.deleteFile(jarId, filename);
+        return result ? updatedJar : null;
     }
 
     @PutMapping("/{id}")

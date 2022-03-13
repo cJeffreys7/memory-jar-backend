@@ -37,14 +37,20 @@ public class MemoryJarRepository {
     }
 
     public List<MemoryJar> getJarsByOwner(String owner) {
+        // TODO: Filter by viewers instead of owner
         final List<MemoryJar> jars = dynamoDBMapper.scan(MemoryJar.class,
                 new DynamoDBScanExpression()
                         .withFilterConditionEntry("owner",
                         new Condition().withComparisonOperator(ComparisonOperator.EQ)
                                 .withAttributeValueList(Collections.singletonList(new AttributeValue(owner)))));
         if (jars == null) {
+//            System.out.println("No jars met search criteria");
             return Collections.emptyList();
         } else {
+//            System.out.println("Found jars that met search criteria: " + jars.size());
+            for (MemoryJar jar : jars) {
+//                System.out.println("Jar that met search criteria: " + jar.getTitle());
+            }
             return jars;
         }
     }
