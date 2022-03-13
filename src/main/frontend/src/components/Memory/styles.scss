@@ -71,7 +71,9 @@ $min-height: 40vw;
         }
 
 
-        .favorite-button-wrapper {
+        .action-button-wrapper {
+            display: flex;
+            justify-content: space-between;
             width: 100%;
 
             .favorite-button {

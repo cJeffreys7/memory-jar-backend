@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 // components
@@ -10,7 +11,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 import Style from './styles.scss'
 
-const MemoryJarActionBar = ({ jarId, deleteJar }) => {
+const MemoryJarActionBar = (props) => {
+    const { currentUser, currentMemoryJar, jarId, deleteJar } = props;
     const navigate = useNavigate();
     const iconSize = Style.fontSize;
 
@@ -46,14 +48,30 @@ const MemoryJarActionBar = ({ jarId, deleteJar }) => {
         deleteJar();
     };
 
+    const adminActions = currentMemoryJar?.admins.includes(currentUser.id);
+    const ownerActions = currentMemoryJar?.owner === currentUser.id;
+
     return (
         <div className='action-bar'>
-            <IconButton {...configEditIconButton} handleClick={editMemoryJar}/>
-            <IconButton {...configShareIconButton} handleClick={shareMemoryJar}/>
-            <IconButton {...configAddIconButton} handleClick={addMemoryJar}/>
-            <IconButton {...configDeleteIconButton} handleClick={deleteMemoryJar}/>
+            {ownerActions &&
+                <IconButton {...configEditIconButton} handleClick={editMemoryJar}/>
+            }
+            {adminActions && 
+                <IconButton {...configShareIconButton} handleClick={shareMemoryJar}/>
+            }
+            {adminActions && 
+                <IconButton {...configAddIconButton} handleClick={addMemoryJar}/>
+            }
+            {ownerActions &&
+                <IconButton {...configDeleteIconButton} handleClick={deleteMemoryJar}/>
+            }
         </div>
     );
 };
 
-export default MemoryJarActionBar;
+const mapStateToProps = ({ user, memoryJar }) => ({
+    currentUser: user.currentUser,
+    currentMemoryJar: memoryJar.currentMemoryJar
+});
+
+export default connect(mapStateToProps, null)(MemoryJarActionBar);

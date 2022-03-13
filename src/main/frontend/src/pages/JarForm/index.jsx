@@ -95,7 +95,10 @@ const Jar = (props) => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        if (!currentMemoryJar) admins.unshift(currentUser.id);
+        if (!currentMemoryJar) {
+            admins.unshift(currentUser.id);
+            viewers.unshift(currentUser.id);
+        };
         let formattedFormData = {
             admins: admins,
             viewers: viewers,

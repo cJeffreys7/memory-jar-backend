@@ -11,6 +11,8 @@ import IconButton from '../MUI/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import defaultImg from '../../assets/memoryjar_logo_dark.svg';
 import Skeleton from '@mui/material/Skeleton';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 // services
 import * as memoryJarService from '../../services/memoryJarService'
@@ -18,6 +20,7 @@ import * as memoryJarService from '../../services/memoryJarService'
 import './styles.scss'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import DialogModal from '../MUI/DialogModal';
 
 const theme = createTheme({
     palette: {
@@ -34,6 +37,8 @@ const Memory = (props) => {
     const { currentMemoryJar, setCurrentMemoryJar, showFavoritesOnly, showRandomMemory, showRandomFavoriteMemory, loading } = props;
     const [slideIndex, setSlideIndex] = useState(0);
     const [memories, setMemories] = useState([]);
+    const [deleteModal, setDeleteModal] = useState(false);
+    const [deleteMemoryFile, setDeleteMemoryFile] = useState(null);
 
     const settings = {
         autoplay: true,
@@ -47,6 +52,29 @@ const Memory = (props) => {
         afterChange: (current) => setSlideIndex(current)
     };
 
+    const editMemory = () => {
+        console.log('Edit Memory action pressed');
+    }
+
+    const openDeleteMemoryModal = () => {
+        console.log('Delete Memory action pressed');
+        setDeleteMemoryFile(memories[slideIndex].image);
+        setDeleteModal(true);
+    }
+
+    const closeDeleteMemoryModal = () => {
+        setDeleteMemoryFile(null);
+        setDeleteModal(false);
+    }
+
+    const deleteMemory = async () => {
+        console.log('Delete Memory: ', deleteMemoryFile.key);
+        const result = await memoryJarService.deleteMemory(currentMemoryJar.jarId, deleteMemoryFile.key);
+        console.log('Result: ', result.data);
+        setCurrentMemoryJar(result.data);
+        closeDeleteMemoryModal();
+    }
+
     const favoriteMemory = async () => {
         if (memories.length) {
             const result = await memoryJarService.favoriteMemory(
@@ -57,8 +85,8 @@ const Memory = (props) => {
             if (result) {
                 setCurrentMemoryJar(result.data);
             };
-        }
-    }
+        };
+    };
 
     useEffect(() => {
         setMemories([]);
@@ -85,6 +113,18 @@ const Memory = (props) => {
         formatMemories();
     }, [currentMemoryJar]);
 
+    const configEditButton = {
+        theme: theme,
+        icon: <EditIcon />,
+        handleClick: editMemory
+    }
+
+    const configDeleteButton = {
+        theme: theme,
+        icon: <DeleteIcon />,
+        handleClick: openDeleteMemoryModal
+    }
+
     const configIconButton = {
         theme: theme,
         icon: <FavoriteIcon />,
@@ -108,7 +148,11 @@ const Memory = (props) => {
                         }
                     </Slider>
                 </div>
-                <div className='favorite-button-wrapper'>
+                <div className='action-button-wrapper'>
+                    <div className='admin-buttons'>
+                        <IconButton {...configEditButton}/>
+                        <IconButton {...configDeleteButton}/>
+                    </div>
                     <div className='favorite-button'>
                         <IconButton
                             {...configIconButton}
@@ -119,6 +163,15 @@ const Memory = (props) => {
                     </div>
                 </div>
             </div>
+            <DialogModal 
+                isOpen={deleteModal}
+                title={'Delete Memory'}
+                description={`Are you sure you want to throw away this memory of ${deleteMemoryFile?.alt}?`}
+                confirmText={'Delete'}
+                cancelText={'Cancel'}
+                confirmHandleClick={deleteMemory}
+                cancelHandleClick={closeDeleteMemoryModal}
+            />
         </div>
     );
 };
