@@ -16,7 +16,8 @@ View these more in depth [**here**](https://whimsical.com/memoryjar-FF3NupDB4M26
 
 ### **Spring Boot and React Java Full Stack**
   - AWS S3
-  - DynamoDB
+  - AWS DynamoDB
+  - AWS Cognito
   - Maven
   - Java Spring Boot
   - React
@@ -25,11 +26,11 @@ View these more in depth [**here**](https://whimsical.com/memoryjar-FF3NupDB4M26
 
 # Next Steps
 
-- [ ] Users should be able to create a profile
-- [ ] Users should be able to create a media album
-- [ ] Users should be able to add media items to their media album
-- [ ] Users should be able to edit their media album details
-- [ ] Users should be able to edit their media item details
-- [ ] Users should be able to delete media items
+- [x] Users should be able to create a profile
+- [x] Users should be able to create a media album
+- [x] Users should be able to add media items to their media album
+- [x] Users should be able to edit their media album details
+- [x] Users should be able to edit their media item details
+- [x] Users should be able to delete media items
 - [ ] Users should be able to share their media albums
 - [ ] Users should be able to set viewing permissions for their media albums
