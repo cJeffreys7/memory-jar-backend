@@ -14,7 +14,7 @@ import './styles.scss'
 
 const initialErrors = {};
 
-const Jar = (props) => {
+const JarForm = (props) => {
     const navigate = useNavigate();
     const { currentUser, currentMemoryJar } = props;
     const [errors, setErrors] = useState(initialErrors);
@@ -303,7 +303,9 @@ const Jar = (props) => {
                     <div className='jar-permissions-border'>
                         <div className='jar-permission-viewers'>
                             {viewerPermissions.viewers && 
-                                viewerPermissions.viewers.map(viewer => (
+                                viewerPermissions.viewers
+                                .filter(viewer => viewer !== currentUser.id)
+                                .map(viewer => (
                                     <JarViewer
                                         key={viewer}
                                         email={viewer}
@@ -327,7 +329,7 @@ const Jar = (props) => {
     );
 };
 
-Jar.defaultProps = {
+JarForm.defaultProps = {
     currentUser: null
 };
 
@@ -336,4 +338,4 @@ const mapStateToProps = ({ user, memoryJar }) => ({
     currentMemoryJar: memoryJar.currentMemoryJar
 });
 
-export default connect(mapStateToProps, null)(Jar);
+export default connect(mapStateToProps, null)(JarForm);

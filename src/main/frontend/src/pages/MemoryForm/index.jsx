@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-// import { connect } from 'react-redux';
-
+import { connect } from 'react-redux';
 
 // components
 import Dropzone from '../../components/Dropzone';
@@ -11,23 +10,25 @@ import Button from '../../components/MUI/StyledButton';
 // services
 import * as memoryJarService from '../../services/memoryJarService'
 
+// assets
+import DefaultImg from '../../assets/memoryjar_logo.svg'
+
 import './styles.scss'
 
 const initialErrors = {};
 
-const initialFormData = {
-    title: '',
-    description: '',
-    isFavorited: false
-};
-
 const MemoryForm = (props) => {
     const navigate = useNavigate();
-    // const { currentUser } = props;
-    const { id } = useParams();
+    const { currentMemoryJar } = props;
+    const { id, memoryId } = useParams();
     const [errors, setErrors] = useState(initialErrors);
-    const [formData, setFormData] = useState(initialFormData);
+    const [formData, setFormData] = useState({
+        title: '',
+        description: '',
+        isFavorited: false
+    });
     const [file, setFile] = useState(null);
+    const [defaultImg, setDefaultImg] = useState(DefaultImg);
 
     const handleChange = e => {
         setFormData({
@@ -47,7 +48,16 @@ const MemoryForm = (props) => {
 
     const handleSubmit = async e => {
         e.preventDefault();
-        const result = await memoryJarService.saveMemory(id, formData, file);
+        let result;
+        if (currentMemoryJar) {
+            result = await memoryJarService.updateMemory(
+                id, formData
+            );
+        } else {
+            result = await memoryJarService.saveMemory(
+                id, formData, file
+            );
+        }
         if (result) navigate(-1);
     };
 
@@ -88,6 +98,14 @@ const MemoryForm = (props) => {
         formCheck();
     }, [title, description]);
 
+    useEffect(() => {
+        setFormData({
+            title: currentMemoryJar ? currentMemoryJar.memories[0].title : '',
+            description: '',
+            isFavorited: false
+        });
+    }, []);
+
     const titleValidation = () => {
         let error = {};
         if (!title) {
@@ -122,6 +140,19 @@ const MemoryForm = (props) => {
         return !(title && description)
     }
 
+    useEffect(() => {
+        let memory;
+        if (currentMemoryJar) {
+            memory = currentMemoryJar.memories.find(
+                memory => memory.filename === memoryId
+            );
+            setDefaultImg(`http://localhost:8080/jars/${id}/memories/${memoryId}`);
+            setFormData({
+                ...memory
+            });
+        };
+    }, [currentMemoryJar]);
+
     return (
         <div className='memory-form-wrapper'>
             <form className='memory-form' onSubmit={handleSubmit}>
@@ -149,7 +180,7 @@ const MemoryForm = (props) => {
                     onChange={handleChange}
                     variant='outlined'
                 />
-                <Dropzone jarId={id} handleAddFile={handleAddFile}/>
+                <Dropzone canEdit={currentMemoryJar ? false : true} defaultImg={defaultImg} handleAddFile={handleAddFile}/>
                 <Button
                     type='submit'
                     label='Submit'
@@ -160,12 +191,12 @@ const MemoryForm = (props) => {
     );
 };
 
-// MemoryForm.defaultProps = {
-//     currentUser: null
-// };
+MemoryForm.defaultProps = {
+    currentUser: null
+};
 
-// const mapStateToProps = ({ user }) => ({
-//     currentUser: user.currentUser
-// });
+const mapStateToProps = ({ memoryJar }) => ({
+    currentMemoryJar: memoryJar.currentMemoryJar
+});
 
-export default MemoryForm;
+export default connect(mapStateToProps, null)(MemoryForm);

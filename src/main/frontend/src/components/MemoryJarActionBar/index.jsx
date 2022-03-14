@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { clearCurrentMemoryJar } from '../../redux/MemoryJar/memoryJarActions';
 import { useNavigate } from 'react-router-dom';
 
 // components
@@ -12,28 +13,28 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Style from './styles.scss'
 
 const MemoryJarActionBar = (props) => {
-    const { currentUser, currentMemoryJar, jarId, deleteJar } = props;
+    const { currentUser, currentMemoryJar, clearCurrentMemoryJar, jarId, deleteJar } = props;
     const navigate = useNavigate();
     const iconSize = Style.fontSize;
 
     const configEditIconButton = {
         icon: <EditIcon sx={{ fontSize: iconSize}}/>
-    }
+    };
 
     const configShareIconButton = {
         icon: <ShareIcon sx={{ fontSize: iconSize}}/>
-    }
+    };
 
     const configAddIconButton = {
         icon: <AddIcon sx={{ fontSize: iconSize}}/>
-    }
+    };
 
     const configDeleteIconButton = {
         icon: <DeleteIcon sx={{ fontSize: iconSize}}/>
-    }
+    };
 
     const editMemoryJar = e => {
-        navigate('/jars/new');
+        navigate(`/jars/${jarId}/edit`);
     };
 
     const shareMemoryJar = e => {
@@ -41,7 +42,8 @@ const MemoryJarActionBar = (props) => {
     };
 
     const addMemoryJar = e => {
-        navigate(`/jars/${jarId}/memories/new`)
+        clearCurrentMemoryJar();
+        navigate(`/jars/${jarId}/memories/new`);
     };
 
     const deleteMemoryJar = e => {
@@ -74,4 +76,8 @@ const mapStateToProps = ({ user, memoryJar }) => ({
     currentMemoryJar: memoryJar.currentMemoryJar
 });
 
-export default connect(mapStateToProps, null)(MemoryJarActionBar);
+const mapDispatchToProps = dispatch => ({
+    clearCurrentMemoryJar: memoryJar => dispatch(clearCurrentMemoryJar(memoryJar))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MemoryJarActionBar);

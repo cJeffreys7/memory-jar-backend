@@ -6,7 +6,7 @@ import AppBar from '../components/MUI/AppBar';
 
 // pages
 import Home from '../pages/Home';
-import Jar from '../pages/JarForm';
+import JarForm from '../pages/JarForm';
 import SignIn from '../pages/SignIn';
 import SignUp from '../pages/SignUp';
 import JarDetails from '../pages/JarDetails';
@@ -46,9 +46,11 @@ const App = (props) => {
           <Route path='/' element={currentUser ? <Home /> : <Navigate to='/SignIn'/>} />
           <Route path='/SignIn' element={<SignIn handleSignUpOrSignIn={handleSignUpOrSignIn}/>}/>
           <Route path='/SignUp' element={<SignUp handleSignUpOrSignIn={handleSignUpOrSignIn}/>}/>
-          <Route path='/jars/new' element={currentUser ? <Jar /> : <Navigate to='/SignIn'/>}/>
+          <Route path='/jars/new' element={currentUser ? <JarForm /> : <Navigate to='/SignIn'/>}/>
+          <Route path='/jars/:id/edit' element={currentUser ? <JarForm /> : <Navigate to='/SignIn'/>}/>
           <Route path='/jars/:id' element={currentUser ? <JarDetails /> : <Navigate to='/SignIn' />}/>
           <Route path='/jars/:id/memories/new' element={currentUser ? <MemoryForm /> : <Navigate to='/SignIn' />}/>
+          <Route path='/jars/:id/memories/:memoryId' element={currentUser ? <MemoryForm /> : <Navigate to='/SignIn' />}/>
         </Routes>
       </>
     </div>

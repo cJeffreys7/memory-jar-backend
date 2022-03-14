@@ -12,7 +12,7 @@ import * as memoryJarService from '../../services/memoryJarService';
 import './styles.scss'
 
 const Home = (props) => {
-    const { currentUser, clearCurrentMemoryJar } = props;
+    const { currentUser, currentMemoryJar, clearCurrentMemoryJar } = props;
     const [memoryJars, setMemoryJars] = useState([]);
 
     useEffect(() => {
@@ -21,7 +21,9 @@ const Home = (props) => {
             setMemoryJars(ownerJars.data);
         };
 
-        clearCurrentMemoryJar();
+        if (currentMemoryJar) {
+            clearCurrentMemoryJar();
+        }
         getMemoryJars();
     }, [currentUser.id])
 

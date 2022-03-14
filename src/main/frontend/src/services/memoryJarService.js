@@ -45,9 +45,9 @@ const saveJar = async (memoryJarData) => {
 }
 
 const saveMemory = async (jarId, memoryData, file) => {
-    const fileData = new FormData();
-    fileData.append("file", file)
     let filename = '';
+    const fileData = new FormData();
+    fileData.append("file", file);
     await axios.post(
         `${baseUrl}/jars/${jarId}/memories/new`,
         fileData,
@@ -62,16 +62,16 @@ const saveMemory = async (jarId, memoryData, file) => {
     })
     .catch((err) => {
         console.log(err);
-    })
+    });
     if (!filename || filename.includes("ERROR")) {
         console.log('Unable to upload file, aborting updating Jar with new memory ', filename);
         return false;
-    }
+    };
     memoryData = {
         ...memoryData,
         type: file.type,
         filename: filename
-    }
+    };
     const currentJar = await getJar(jarId);
     const memories = currentJar.data.memories ? currentJar.data.memories : [];
     memories.push(memoryData);
@@ -104,6 +104,20 @@ const updateJar = async (jarId, memoryJarData) => {
     }
 }
 
+const updateMemory = async (jarId, memoryData) => {
+    const currentJar = await getJar(jarId);
+    let memories = [...currentJar.data.memories];
+    const memoryIndex = memories.findIndex(
+        memory => memory.filename === memoryData.filename
+    );
+    let updatedMemory = {...memories[memoryIndex]};
+    updatedMemory = memoryData;
+    memories[memoryIndex] = updatedMemory;
+    currentJar.data.memories = memories;
+    const result = await updateJar(jarId, currentJar.data);
+    return result;
+}
+
 const deleteJar = async (jarId) => {
     try {
         const result = await axios.delete(
@@ -114,11 +128,10 @@ const deleteJar = async (jarId) => {
     } catch (err) {
         console.log('Failed to update Memory Jar: ', err);
         return null;
-    }
+    };
 }
 
 const deleteMemory = async (jarId, memoryFile) => {
-    // console.log('API call: ', `${baseUrl}/jars/${jarId}/memories/${memoryFile}`);
     try {
         const result = await axios.delete(
             `${baseUrl}/jars/${jarId}/memories/${memoryFile}`
@@ -128,8 +141,8 @@ const deleteMemory = async (jarId, memoryFile) => {
     } catch (err) {
         console.log('Failed to update Memory Jar: ', err);
         return null;
-    }
-}
+    };
+};
 
 export {
     getJar,
@@ -139,6 +152,7 @@ export {
     saveMemory,
     favoriteMemory,
     updateJar,
+    updateMemory,
     deleteJar,
     deleteMemory
-}
+};

@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { setCurrentMemoryJar } from '../../redux/MemoryJar/memoryJarActions';
-import Slider from 'react-slick';
 import { createTheme } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 // components
+import Slider from 'react-slick';
 import IconButton from '../MUI/IconButton';
 
 // assets
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import defaultImg from '../../assets/memoryjar_logo_dark.svg';
+import DefaultImg from '../../assets/memoryjar_logo.svg';
 import Skeleton from '@mui/material/Skeleton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -34,6 +35,7 @@ const theme = createTheme({
 })
 
 const Memory = (props) => {
+    const navigate = useNavigate();
     const { currentMemoryJar, setCurrentMemoryJar, showFavoritesOnly, showRandomMemory, showRandomFavoriteMemory, loading } = props;
     const [slideIndex, setSlideIndex] = useState(0);
     const [memories, setMemories] = useState([]);
@@ -53,13 +55,16 @@ const Memory = (props) => {
     };
 
     const editMemory = () => {
-        console.log('Edit Memory action pressed');
+        const memoryId = memories[slideIndex].image.key;
+        console.log('Edit Memory: ', memoryId);
+        navigate(`/jars/${currentMemoryJar.jarId}/memories/${memoryId}`)
     }
 
     const openDeleteMemoryModal = () => {
-        console.log('Delete Memory action pressed');
-        setDeleteMemoryFile(memories[slideIndex].image);
-        setDeleteModal(true);
+        if (memories[slideIndex]?.image) {
+            setDeleteMemoryFile(memories[slideIndex].image);
+            setDeleteModal(true);
+        }
     }
 
     const closeDeleteMemoryModal = () => {
@@ -68,9 +73,7 @@ const Memory = (props) => {
     }
 
     const deleteMemory = async () => {
-        console.log('Delete Memory: ', deleteMemoryFile.key);
         const result = await memoryJarService.deleteMemory(currentMemoryJar.jarId, deleteMemoryFile.key);
-        console.log('Result: ', result.data);
         setCurrentMemoryJar(result.data);
         closeDeleteMemoryModal();
     }
@@ -144,7 +147,7 @@ const Memory = (props) => {
                                             key={memory.image.key} 
                                             />
                                         )
-                            : <img src={defaultImg} alt='Memory Jar Logo'/>
+                            : <img src={DefaultImg} alt='Memory Jar Logo'/>
                         }
                     </Slider>
                 </div>

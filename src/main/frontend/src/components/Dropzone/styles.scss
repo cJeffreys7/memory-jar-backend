@@ -6,15 +6,30 @@
     justify-content: center;
     align-items: center;
 
-    .file-preview {
-        position: relative;
-        max-height: 100%;
-        max-width: 100%;
+    .dropzone-root {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-        filter: opacity(40%);
+        .file-edit-preview {
+            position: relative;
+            max-height: 100%;
+            max-width: 100%;
+    
+            filter: opacity(40%);
+        }
+    
+        .file-preview {
+            position: relative;
+            max-height: 100%;
+            max-width: 100%;
+    
+        }
+    
+        .dropzone-text {
+            position: absolute;
+        }
     }
 
-    .dropzone-text {
-        position: absolute;
-    }
 }
