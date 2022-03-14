@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class MemoryJarRepository {
@@ -36,20 +38,20 @@ public class MemoryJarRepository {
         return dynamoDBMapper.load(MemoryJar.class, jarId);
     }
 
-    public List<MemoryJar> getJarsByOwner(String owner) {
-        // TODO: Filter by viewers instead of owner
+    public List<MemoryJar> getJarsByViewer(String username) {
+        Map<String, AttributeValue> userId = new HashMap<String, AttributeValue>();
+        userId.put(":username", new AttributeValue().withS(username));
         final List<MemoryJar> jars = dynamoDBMapper.scan(MemoryJar.class,
                 new DynamoDBScanExpression()
-                        .withFilterConditionEntry("owner",
-                        new Condition().withComparisonOperator(ComparisonOperator.EQ)
-                                .withAttributeValueList(Collections.singletonList(new AttributeValue(owner)))));
+                        .withFilterExpression("contains(viewers, :username)")
+                        .withExpressionAttributeValues(userId));
         if (jars == null) {
-//            System.out.println("No jars met search criteria");
+            System.out.println("No jars met search criteria");
             return Collections.emptyList();
         } else {
-//            System.out.println("Found jars that met search criteria: " + jars.size());
+            System.out.println("Found jars that met search criteria: " + jars.size());
             for (MemoryJar jar : jars) {
-//                System.out.println("Jar that met search criteria: " + jar.getTitle());
+                System.out.println("Jar that met search criteria: " + jar.getTitle());
             }
             return jars;
         }

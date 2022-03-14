@@ -45,9 +45,9 @@ public class MemoryJarController {
         return jarRepository.getJarById(jarId);
     }
 
-    @GetMapping("/owner/{owner}")
-    public List<MemoryJar> getJarsByOwner(@PathVariable("owner") String owner) {
-        return jarRepository.getJarsByOwner(owner);
+    @GetMapping("/index/{userId}")
+    public List<MemoryJar> getJarsByViewer(@PathVariable("userId") String viewer) {
+        return jarRepository.getJarsByViewer(viewer);
     }
 
     @GetMapping("/{id}/memories/{memoryId}")
