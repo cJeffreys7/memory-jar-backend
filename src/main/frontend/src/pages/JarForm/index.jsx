@@ -108,7 +108,8 @@ const JarForm = (props) => {
         if (currentMemoryJar) {
             formattedFormData = {
                 ...formattedFormData,
-                jarId: currentMemoryJar.jarId
+                jarId: currentMemoryJar.jarId,
+                memories: currentMemoryJar.memories
             }
             result = memoryJarService.updateJar(currentMemoryJar.jarId, formattedFormData);
         } else {
