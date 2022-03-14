@@ -17,7 +17,7 @@ const Home = (props) => {
 
     useEffect(() => {
         const getMemoryJars = async () => {
-            const ownerJars = await memoryJarService.getJarsByOwner(currentUser.id);
+            const ownerJars = await memoryJarService.getJarsByViewer(currentUser.id);
             setMemoryJars(ownerJars.data);
         };
 

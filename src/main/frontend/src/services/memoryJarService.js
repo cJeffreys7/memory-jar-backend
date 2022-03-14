@@ -12,10 +12,10 @@ const getJar = async (jarId) => {
     }
 }
 
-const getJarsByOwner = async (owner) => {
+const getJarsByViewer = async (userId) => {
     try {
         const result = axios.get(
-            `${baseUrl}/jars/owner/${owner}`,
+            `${baseUrl}/jars/index/${userId}`,
             {
                 headers: {
                     "Access-Control-Allow-Origin": "*"
@@ -142,7 +142,7 @@ const deleteMemory = async (jarId, memoryFile) => {
 
 export {
     getJar,
-    getJarsByOwner,
+    getJarsByViewer,
     getMemory,
     saveJar,
     saveMemory,
