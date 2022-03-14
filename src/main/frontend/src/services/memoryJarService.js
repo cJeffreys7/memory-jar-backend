@@ -5,7 +5,6 @@ const baseUrl = 'http://localhost:8080'
 const getJar = async (jarId) => {
     try {
         const result = await axios.get(`${baseUrl}/jars/${jarId}`);
-        console.log('Memory Jar retrieved: ', result);
         return result;
     } catch (err) {
         console.log('Failed to get Memory Jar: ', err);
@@ -36,7 +35,6 @@ const getMemory = async (jarId, filename, alt) => {
 const saveJar = async (memoryJarData) => {
     try {
         const result = axios.post(`${baseUrl}/jars/new`, memoryJarData);
-        console.log('New Memory Jar created: ', result);
         return true;
     } catch (err) {
         console.log('Failed to create Memory Jar: ', err);
@@ -57,7 +55,6 @@ const saveMemory = async (jarId, memoryData, file) => {
             }
         }
     ).then((result) => {
-        console.log('File uploaded successfully! ', result);
         filename = result.data;
     })
     .catch((err) => {
@@ -96,7 +93,6 @@ const updateJar = async (jarId, memoryJarData) => {
             `${baseUrl}/jars/${jarId}`,
             memoryJarData
         );
-        console.log('Memory Jar updated!');
         return result;
     } catch (err) {
         console.log('Failed to update Memory Jar: ', err);

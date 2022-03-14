@@ -56,7 +56,6 @@ const Memory = (props) => {
 
     const editMemory = () => {
         const memoryId = memories[slideIndex].image.key;
-        console.log('Edit Memory: ', memoryId);
         navigate(`/jars/${currentMemoryJar.jarId}/memories/${memoryId}`)
     }
 
