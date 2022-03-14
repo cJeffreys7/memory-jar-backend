@@ -33,4 +33,4 @@ View these more in depth [**here**](https://whimsical.com/memoryjar-FF3NupDB4M26
 - [x] Users should be able to edit their media item details
 - [x] Users should be able to delete media items
 - [ ] Users should be able to share their media albums
-- [ ] Users should be able to set viewing permissions for their media albums
+- [x] Users should be able to set viewing permissions for their media albums
