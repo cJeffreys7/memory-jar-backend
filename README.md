@@ -23,6 +23,7 @@ View these more in depth [**here**](https://whimsical.com/memoryjar-FF3NupDB4M26
   - React
   - Material UI
   - Node.js
+  - Heroku
 
 # Next Steps
 
