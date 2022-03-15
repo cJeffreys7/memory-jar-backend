@@ -36,7 +36,14 @@ const theme = createTheme({
 
 const Memory = (props) => {
     const navigate = useNavigate();
-    const { currentMemoryJar, setCurrentMemoryJar, showFavoritesOnly, showRandomMemory, showRandomFavoriteMemory, loading } = props;
+    const {
+        currentMemoryJar,
+        setCurrentMemoryJar,
+        showFavoritesOnly,
+        recentMemories,
+        favoriteMemories,
+        loading
+    } = props;
     const [slideIndex, setSlideIndex] = useState(0);
     const [memories, setMemories] = useState([]);
     const [deleteModal, setDeleteModal] = useState(false);
@@ -97,23 +104,19 @@ const Memory = (props) => {
                 const filteredMemories = showFavoritesOnly ? 
                     currentMemoryJar.memories.filter(memory => memory.isFavorited)
                     : currentMemoryJar.memories;
-                // console.log(`Filtered memories for ${showFavoritesOnly ? 'Favorite Memories' : 'All Memories'}`, filteredMemories);
-                const mappedMemories = filteredMemories.map(memory => 
-                    ({
-                        image: {
-                            src: `http://localhost:8080/jars/${currentMemoryJar.jarId}/memories/${memory.filename}`,
-                            alt: memory.title,
-                            key: memory.filename
-                        },
-                        isFavorited: memory.isFavorited
-                    })
-                );
+                const mappedMemories = memoryJarService.mapMemories(currentMemoryJar.jarId, filteredMemories);
                 setMemories(mappedMemories);
             };
         };
 
-        formatMemories();
-    }, [currentMemoryJar]);
+        if (recentMemories) {
+            setMemories(recentMemories);
+        } else if (favoriteMemories) {
+            setMemories(favoriteMemories);
+        } else {
+            formatMemories();
+        };
+    }, [currentMemoryJar, recentMemories, favoriteMemories]);
 
     const configEditButton = {
         theme: theme,

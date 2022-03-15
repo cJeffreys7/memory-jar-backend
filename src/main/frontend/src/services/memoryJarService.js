@@ -140,6 +140,20 @@ const deleteMemory = async (jarId, memoryFile) => {
     };
 };
 
+const mapMemories = (jarId, memories) => {
+    const mappedMemories = memories.map(memory => 
+        ({
+            image: {
+                src: `http://localhost:8080/jars/${jarId}/memories/${memory.filename}`,
+                alt: memory.title,
+                key: memory.filename
+            },
+            isFavorited: memory.isFavorited
+        })
+    );
+    return mappedMemories;
+};
+
 export {
     getJar,
     getJarsByViewer,
@@ -150,5 +164,6 @@ export {
     updateJar,
     updateMemory,
     deleteJar,
-    deleteMemory
+    deleteMemory,
+    mapMemories
 };
