@@ -22,40 +22,31 @@ const Home = (props) => {
     }
 
     useEffect(() => {
-        const getMemoryJars = async () => {
+        const getMemories = async () => {
             const ownerJars = await memoryJarService.getJarsByViewer(currentUser.id);
             let newestMemories = [];
             let favoritedMemories = [];
             for (const jar of ownerJars.data) {
                 if (jar.memories?.length) {
-                    console.log('Jar memories: ', jar.memories);
                     let mappedMemories = memoryJarService.mapMemories(jar.jarId, jar.memories);
                     // Clone mappedMemories instead of shallow copy so all memories are iterated through
                     const totalMemories = mappedMemories.map(memory => memory);
-                    console.log('Total memories', totalMemories);
                     totalMemories.forEach(memory => {
-                        console.log('Memory: ', memory);
-                        console.log('Is Favorited? ', memory.isFavorited);
                         if (memory.isFavorited) {
                             const memoryIndex = mappedMemories.indexOf(memory);
-                            console.log('Memories before splice: ', mappedMemories);
                             favoritedMemories.push(mappedMemories.splice(memoryIndex, 1)[0]);
-                            console.log('Memories after splice: ', mappedMemories);
-                            console.log('Favorited Memories after splice: ', favoritedMemories);
                         };
                     });
                     const updatedMemories = newestMemories.concat(mappedMemories);
                     newestMemories = updatedMemories;
                 };
             };
-            console.log('Recent memories: ', newestMemories);
-            console.log('Favorite memories: ', favoritedMemories);
             setRecentMemories(newestMemories);
             setFavoriteMemories(favoritedMemories);
             setMemoryJars(ownerJars.data);
         };
 
-        getMemoryJars();
+        getMemories();
         if (currentMemoryJar) {
             clearCurrentMemoryJar();
         };
