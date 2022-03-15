@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const baseUrl = 'http://localhost:8080'
+const baseUrl = 'https://memoryjar-springboot.herokuapp.com'
 
 const getJar = async (jarId) => {
     try {
@@ -14,6 +14,7 @@ const getJar = async (jarId) => {
 
 const getJarsByViewer = async (userId) => {
     try {
+        console.log('Fetching from: ', `${baseUrl}/jars/index/${userId}`);
         const result = axios.get(
             `${baseUrl}/jars/index/${userId}`,
             {
@@ -29,7 +30,7 @@ const getJarsByViewer = async (userId) => {
 }
 
 const getMemory = async (jarId, filename, alt) => {
-    return <img src={`http://localhost:8080/jars/${jarId}/memories/${filename}`} alt={alt} />
+    return <img src={`${baseUrl}/jars/${jarId}/memories/${filename}`} alt={alt} />
 }
 
 const saveJar = async (memoryJarData) => {
@@ -144,7 +145,7 @@ const mapMemories = (jarId, memories) => {
     const mappedMemories = memories.map(memory => 
         ({
             image: {
-                src: `http://localhost:8080/jars/${jarId}/memories/${memory.filename}`,
+                src: `${baseUrl}/jars/${jarId}/memories/${memory.filename}`,
                 alt: memory.title,
                 key: memory.filename
             },
