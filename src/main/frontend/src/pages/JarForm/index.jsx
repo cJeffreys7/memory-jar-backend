@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 // components
 import FormInput from '../../components/FormInput';
 import JarViewer from '../../components/JarViewer';
 import Button from '../../components/MUI/StyledButton';
+import { setCurrentMemoryJar } from '../../redux/MemoryJar/memoryJarActions';
 
 // services
 import * as memoryJarService from '../../services/memoryJarService'
@@ -16,10 +17,11 @@ const initialErrors = {};
 
 const JarForm = (props) => {
     const navigate = useNavigate();
-    const { currentUser, currentMemoryJar } = props;
+    const { id } = useParams();
+    const { currentUser, currentMemoryJar, setCurrentMemoryJar } = props;
     const [errors, setErrors] = useState(initialErrors);
     const [formData, setFormData] = useState({
-        owner: currentUser.id,
+        owner: currentUser?.id,
         title: '',
         description: ''
     });
@@ -171,7 +173,7 @@ const JarForm = (props) => {
     // Edit Memory Jar to New Memory Jar
     useEffect(() => {
         setFormData({
-            owner: currentUser.id,
+            owner: currentUser?.id,
             title: currentMemoryJar ? currentMemoryJar.title : '',
             description: currentMemoryJar ? currentMemoryJar.description : ''
         });
@@ -181,6 +183,17 @@ const JarForm = (props) => {
             admins: currentMemoryJar ? currentMemoryJar.admins : []
         });
     }, [currentMemoryJar])
+
+    useEffect(() => {
+        const getMemoryJar = async (jarId) => {
+            if (!currentMemoryJar) {
+                const memoryJar = await memoryJarService.getJar(jarId);
+                setCurrentMemoryJar(memoryJar.data);
+            };
+        };
+
+        getMemoryJar(id);
+    }, [])
 
 
     const titleValidation = () => {
@@ -339,4 +352,8 @@ const mapStateToProps = ({ user, memoryJar }) => ({
     currentMemoryJar: memoryJar.currentMemoryJar
 });
 
-export default connect(mapStateToProps, null)(JarForm);
+const mapDispatchToProps = dispatch => ({
+    setCurrentMemoryJar: memoryJar => dispatch(setCurrentMemoryJar(memoryJar))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(JarForm);

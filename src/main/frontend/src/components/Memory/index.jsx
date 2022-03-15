@@ -157,7 +157,7 @@ const Memory = (props) => {
                 {!(recentMemories?.length || favoriteMemories?.length) && 
                     <div className='action-button-wrapper'>
                         <div className='admin-buttons'>
-                            {currentMemoryJar.admins.includes(currentUser.id) &&
+                            {currentMemoryJar?.admins?.includes(currentUser?.id) &&
                                 <div>
                                     <IconButton {...configEditButton}/>
                                     <IconButton {...configDeleteButton}/>

@@ -17,13 +17,9 @@ const Home = (props) => {
     const [recentMemories, setRecentMemories] = useState([]);
     const [favoriteMemories, setFavoriteMemories] = useState([]);
 
-    const getRecentMemories = async () => {
-
-    }
-
     useEffect(() => {
         const getMemories = async () => {
-            const ownerJars = await memoryJarService.getJarsByViewer(currentUser.id);
+            const ownerJars = await memoryJarService.getJarsByViewer(currentUser?.id);
             let newestMemories = [];
             let favoritedMemories = [];
             for (const jar of ownerJars.data) {
@@ -50,7 +46,7 @@ const Home = (props) => {
         if (currentMemoryJar) {
             clearCurrentMemoryJar();
         };
-    }, [currentUser.id])
+    }, [currentUser?.id])
 
     return (
         <div className='home-wrapper'>

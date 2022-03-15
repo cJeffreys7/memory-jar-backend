@@ -50,8 +50,8 @@ const MemoryJarActionBar = (props) => {
         deleteJar();
     };
 
-    const adminActions = currentMemoryJar?.admins.includes(currentUser.id);
-    const ownerActions = currentMemoryJar?.owner === currentUser.id;
+    const adminActions = currentMemoryJar?.admins?.includes(currentUser?.id);
+    const ownerActions = currentMemoryJar?.owner === currentUser?.id;
 
     return (
         <div className='action-bar'>

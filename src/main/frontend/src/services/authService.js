@@ -7,7 +7,6 @@ const userPool = new CognitoUserPool({
 });
 
 const getUser = () => {
-    console.log('Retrieving user');
     return tokenService.getUserFromToken();
 }
 
@@ -21,7 +20,8 @@ const loginUser = (email, password) => {
     return new Promise((resolve, reject) =>
         user.authenticateUser(authenticationDetails, {
             onSuccess: result => {
-                tokenService.setToken(result.getAccessToken().getJwtToken());
+                // tokenService.setToken(result.getAccessToken().getJwtToken());
+                tokenService.setToken(result.getIdToken().getJwtToken());
                 resolve(result);
             },
             onFailure: err => {
@@ -34,7 +34,7 @@ const loginUser = (email, password) => {
 const logoutUser = () => {
     const currentUser = getUser();
     if (currentUser !== null) {
-        const user = new CognitoUser({ Username: currentUser.username, Pool: userPool })
+        const user = new CognitoUser({ Username: currentUser['cognito:username'], Pool: userPool })
         user.signOut();
         tokenService.removeToken();
     }

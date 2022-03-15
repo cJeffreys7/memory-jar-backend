@@ -8,18 +8,19 @@ import FormInput from '../../components/FormInput';
 import Button from '../../components/MUI/StyledButton';
 
 // services
-import * as memoryJarService from '../../services/memoryJarService'
+import * as memoryJarService from '../../services/memoryJarService';
 
 // assets
-import DefaultImg from '../../assets/memoryjar_logo.svg'
+import DefaultImg from '../../assets/memoryjar_logo.svg';
 
-import './styles.scss'
+import './styles.scss';
+import { setCurrentMemoryJar } from '../../redux/MemoryJar/memoryJarActions';
 
 const initialErrors = {};
 
 const MemoryForm = (props) => {
     const navigate = useNavigate();
-    const { currentMemoryJar } = props;
+    const { currentMemoryJar, setCurrentMemoryJar } = props;
     const { id, memoryId } = useParams();
     const [errors, setErrors] = useState(initialErrors);
     const [formData, setFormData] = useState({
@@ -57,7 +58,7 @@ const MemoryForm = (props) => {
             result = await memoryJarService.saveMemory(
                 id, formData, file
             );
-        }
+        };
         if (result) navigate(-1);
     };
 
@@ -77,23 +78,23 @@ const MemoryForm = (props) => {
             if (titleEntry) {
                 errors.push({ titleEntry: true });
                 errors.push(titleValidation());
-            }
+            };
             if (descriptionEntry) {
                 errors.push({ descriptionEntry: true });
                 errors.push(descriptionValidation());
-            }
+            };
             let formErrors = {};
             errors.forEach(error => {
                 formErrors = {
                     ...formErrors,
                     ...error
-                }
-            })
+                };
+            });
             setErrors({
                 ...errors,
                 ...formErrors
-            })
-        }
+            });
+        };
 
         formCheck();
     }, [title, description]);
@@ -112,14 +113,14 @@ const MemoryForm = (props) => {
             error = {
                 titleError: true,
                 titleHelperText: 'Please enter a name for this Memory'
-            }
+            };
         } else {
             error = {
                 titleError: false
-            }
-        }
+            };
+        };
         return error;
-    }
+    };
 
     const descriptionValidation = () => {
         let error = {};
@@ -127,22 +128,22 @@ const MemoryForm = (props) => {
             error = {
                 descriptionError: true,
                 descriptionHelperText: 'Please enter a description for this Memory'
-            }
+            };
         } else {
             error = {
                 descriptionError: false
-            }
-        }
+            };
+        };
         return error;
-    }
+    };
 
     const isFormInvalid = () => {
-        return !(title && description)
-    }
+        return !(title && description);
+    };
 
     useEffect(() => {
         let memory;
-        if (currentMemoryJar) {
+        if (currentMemoryJar && memoryId) {
             memory = currentMemoryJar.memories.find(
                 memory => memory.filename === memoryId
             );
@@ -152,6 +153,17 @@ const MemoryForm = (props) => {
             });
         };
     }, [currentMemoryJar]);
+
+    useEffect(() => {
+        const getMemoryJar = async (jarId) => {
+            if (!currentMemoryJar) {
+                const memoryJar = await memoryJarService.getJar(jarId);
+                setCurrentMemoryJar(memoryJar.data);
+            };
+        };
+
+        getMemoryJar(id);
+    }, []);
 
     return (
         <div className='memory-form-wrapper'>
@@ -199,4 +211,8 @@ const mapStateToProps = ({ memoryJar }) => ({
     currentMemoryJar: memoryJar.currentMemoryJar
 });
 
-export default connect(mapStateToProps, null)(MemoryForm);
+const mapDispatchToProps = dispatch => ({
+    setCurrentMemoryJar: memoryJar => dispatch(setCurrentMemoryJar(memoryJar))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MemoryForm);
