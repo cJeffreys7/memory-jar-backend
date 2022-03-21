@@ -23,15 +23,22 @@ View these more in depth [**here**](https://whimsical.com/memoryjar-FF3NupDB4M26
   - React
   - Material UI
   - Node.js
-  - Heroku
+  - Heroku (Backend deployment)
+  - Netlify (Frontend deployment)
 
 # Next Steps
 
-- [x] Users should be able to create a profile
+MVP
 - [x] Users should be able to create a media album
 - [x] Users should be able to add media items to their media album
 - [x] Users should be able to edit their media album details
 - [x] Users should be able to edit their media item details
 - [x] Users should be able to delete media items
-- [ ] Users should be able to share their media albums
+- [x] Users should be able to share their media albums
 - [x] Users should be able to set viewing permissions for their media albums
+
+Icebox
+- [ ] Users should be able to create a profile
+- [ ] Users should be able to reset their passwords from their profile/account settings
+- [ ] Users should be able to reset their passwords from the login page
+- [ ] Users should receive a confirmation email to confirm email address upon signup
