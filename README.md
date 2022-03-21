@@ -5,7 +5,7 @@
 # Planning essential links:
 
 ## **ERD**
-![Imgur](https://i.imgur.com/PHmgrBC.png)
+![Imgur](https://i.imgur.com/cFOG8wp.png)
 
 ## **Wireframes**
 ![Imgur](https://i.imgur.com/fkp53dY.png)
