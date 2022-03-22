@@ -4,10 +4,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBSaveExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
-import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
-import com.chrisjeffreys.photosharesite.bucket.BucketService;
 import com.chrisjeffreys.photosharesite.datamodel.MemoryJar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -21,12 +18,10 @@ import java.util.Map;
 public class MemoryJarRepository {
 
     @Autowired
-    private DynamoDBMapper dynamoDBMapper;
-    private BucketService bucketService;
+    final private DynamoDBMapper dynamoDBMapper;
 
-    public MemoryJarRepository(DynamoDBMapper dynamoDBMapper, BucketService bucketService) {
+    public MemoryJarRepository(DynamoDBMapper dynamoDBMapper) {
         this.dynamoDBMapper = dynamoDBMapper;
-        this.bucketService = bucketService;
     }
 
     public MemoryJar saveJar(MemoryJar jar) {
@@ -39,7 +34,7 @@ public class MemoryJarRepository {
     }
 
     public List<MemoryJar> getJarsByViewer(String username) {
-        Map<String, AttributeValue> userId = new HashMap<String, AttributeValue>();
+        Map<String, AttributeValue> userId = new HashMap<>();
         userId.put(":username", new AttributeValue().withS(username));
         final List<MemoryJar> jars = dynamoDBMapper.scan(MemoryJar.class,
                 new DynamoDBScanExpression()
